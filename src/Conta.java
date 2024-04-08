@@ -6,4 +6,8 @@ public class Conta { //TESTE
         this.nomeUsuario = nomeUsuario;
         this.senha = senha;
     }
+
+    public String getNomeUsuario() {
+        return this.nomeUsuario;
+    }
 }

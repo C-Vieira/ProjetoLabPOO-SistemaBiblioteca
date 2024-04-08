@@ -9,5 +9,8 @@ public class Main { //TESTE
         ContaBaseDeDados contaBaseDeDados = new ContaBaseDeDados();
         contaBaseDeDados.AdicionarConta(minhaConta);
         System.out.println(caio.getID());
+
+        TelaLogin login = new TelaLogin();
+        login.setVisible(true);
     }
 }
