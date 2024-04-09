@@ -10,4 +10,8 @@ public class Conta { //TESTE
     public String getNomeUsuario() {
         return this.nomeUsuario;
     }
+
+    public boolean VerificaSenha(String senha){
+        return this.senha.equals(senha);
+    }
 }

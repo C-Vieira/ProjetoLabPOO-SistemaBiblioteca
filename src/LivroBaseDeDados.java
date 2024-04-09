@@ -25,11 +25,12 @@ public class LivroBaseDeDados {
         }
         System.out.println("Livro não encontrado");
     }
-    public void ExcluirLivro(Livro livro){ //Delete
+    public void ExcluirLivro(String titulo){ //Delete
         for(Livro l : livros){
-            if(l.getID() == livro.getID()){
+            if(l.getTitulo().equals(titulo)){
                 livros.remove(l);
                 System.out.println("Livro excluído");
+                return;
             }
         }
         System.out.println("Livro não encontrado");

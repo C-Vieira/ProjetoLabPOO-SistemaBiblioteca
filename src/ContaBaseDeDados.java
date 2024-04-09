@@ -12,13 +12,15 @@ public class ContaBaseDeDados { //TESTE
         System.out.println("Conta adicionada");
     }
 
-    public void BuscarConta(String usrName){ //Read
+    public Conta BuscarConta(String usrName){ //Read
         for(Conta c : contas){
             if(c.getNomeUsuario().equals(usrName)){
                 System.out.println("Conta encontrada");
+                return c;
             }
         }
         System.out.println("Conta não encontrada");
+        return null;
     }
 
     public void EditarConta(Conta conta){ //Update
@@ -34,6 +36,7 @@ public class ContaBaseDeDados { //TESTE
             if(c.getNomeUsuario().equals(conta.getNomeUsuario())){
                 contas.remove(c);
                 System.out.println("Conta excluída");
+                return;
             }
         }
         System.out.println("Conta não encontrada");
