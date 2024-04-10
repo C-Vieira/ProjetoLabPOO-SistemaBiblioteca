@@ -1,4 +1,4 @@
-public class Usuario { //TESTE
+public class Usuario {
     private int ID;
     private String nome;
     private String CPF;

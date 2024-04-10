@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class ContaBaseDeDados { //TESTE
+public class ContaBaseDeDados {
     private ArrayList<Conta> contas = new ArrayList<Conta>();
 
     public ArrayList<Conta> getContas() {

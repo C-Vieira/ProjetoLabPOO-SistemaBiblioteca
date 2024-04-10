@@ -8,11 +8,17 @@ public class TelaCadastroLivro extends javax.swing.JFrame implements ActionListe
     private JLabel lblCategoria;
     private JLabel lblAutor;
     private JLabel lblISBN;
+    private JLabel lblPrazoDeEntrega;
+    private JLabel lblDisponibilidade;
     private JTextField txtFieldTitulo;
     private JTextField txtFieldCategoria;
     private JTextField txtFieldAutor;
     private JTextField txtFieldISBN;
+    private JTextField txtPrazoDeEntrega;
+    private JRadioButton radioBtnDisponivel;
     private JButton btnAdicionarLivro;
+    private JButton btnBuscarLivro;
+    private JButton btnEditarLivro;
     private JButton btnExcluirLivro;
     private LivroBaseDeDados baseDeDados  = new LivroBaseDeDados();
 
@@ -20,22 +26,32 @@ public class TelaCadastroLivro extends javax.swing.JFrame implements ActionListe
         setTitle("Cadastro de Livros");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        setSize(500, 250);
-        setLayout(new GridLayout(5, 2));
+        setSize(800, 400);
+        setLayout(new GridLayout(4, 4));
 
         lblTitulo = new JLabel("Título:");
         lblCategoria = new JLabel("Categoria:");
         lblAutor = new JLabel("Autor:");
         lblISBN = new JLabel("ISBN:");
+        lblPrazoDeEntrega = new JLabel("Prazo de Entrega (em dias):");
+        lblDisponibilidade = new JLabel("Status de Disponibilidade:");
         txtFieldTitulo = new JTextField();
         txtFieldCategoria = new JTextField();
         txtFieldAutor = new JTextField();
         txtFieldISBN = new JTextField();
+        txtPrazoDeEntrega = new JTextField();
+        radioBtnDisponivel = new JRadioButton("Disponível", false);
         btnAdicionarLivro = new JButton("Adicionar");
+        btnBuscarLivro = new JButton("Buscar");
+        btnEditarLivro = new JButton("Editar");
         btnExcluirLivro = new JButton("Excluir");
 
         btnAdicionarLivro.setActionCommand("adicionar");
         btnAdicionarLivro.addActionListener(this);
+        btnBuscarLivro.setActionCommand("buscar");
+        btnBuscarLivro.addActionListener(this);
+        btnEditarLivro.setActionCommand("editar");
+        btnEditarLivro.addActionListener(this);
         btnExcluirLivro.setActionCommand("excluir");
         btnExcluirLivro.addActionListener(this);
 
@@ -47,35 +63,60 @@ public class TelaCadastroLivro extends javax.swing.JFrame implements ActionListe
         add(txtFieldAutor);
         add(lblISBN);
         add(txtFieldISBN);
-        add(btnExcluirLivro);
+        add(lblPrazoDeEntrega);
+        add(txtPrazoDeEntrega);
+        add(lblDisponibilidade);
+        add(radioBtnDisponivel);
         add(btnAdicionarLivro);
+        add(btnBuscarLivro);
+        add(btnEditarLivro);
+        add(btnExcluirLivro);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getActionCommand().equals("adicionar")) {
-            String titulo = txtFieldTitulo.getText();
-            String categoria = txtFieldCategoria.getText();
-            String autor = txtFieldAutor.getText();
-            String ISBN = txtFieldISBN.getText();
+        switch (e.getActionCommand()) {
+            case "adicionar":{
+                String titulo = txtFieldTitulo.getText();
+                String categoria = txtFieldCategoria.getText();
+                String autor = txtFieldAutor.getText();
+                String ISBN = txtFieldISBN.getText();
+                String prazoTexto = txtPrazoDeEntrega.getText();
+                boolean disponivel = radioBtnDisponivel.isSelected();
 
-            if(titulo.isEmpty() || categoria.isEmpty() || autor.isEmpty() || ISBN.isEmpty()) {
-                System.out.println("Erro ao Adicionar Livro");
-            }else{
-                Livro novoLivro = new Livro(0, titulo, categoria, autor, ISBN);
-                baseDeDados.AdicionarLivro(novoLivro);
+                if(titulo.isEmpty() || categoria.isEmpty() || autor.isEmpty() || ISBN.isEmpty() || prazoTexto.isEmpty()) {
+                    System.out.println("Erro ao Adicionar Livro");
+                }else{
+                    int prazo = Integer.parseInt(txtPrazoDeEntrega.getText());
+                    Livro novoLivro = new Livro(0, titulo, categoria, autor, ISBN, prazo, disponivel);
+                    novoLivro.setDisponibilidade(disponivel);
+                    baseDeDados.AdicionarLivro(novoLivro);
+                }
+                txtFieldTitulo.setText("");
+                txtFieldCategoria.setText("");
+                txtFieldAutor.setText("");
+                txtFieldISBN.setText("");
+                txtPrazoDeEntrega.setText("");
+                radioBtnDisponivel.setSelected(false);
+                break;
             }
-            txtFieldTitulo.setText("");
-            txtFieldCategoria.setText("");
-            txtFieldAutor.setText("");
-            txtFieldISBN.setText("");
-        }
-        if(e.getActionCommand().equals("excluir")) {
-            String titulo = txtFieldTitulo.getText();
+            case "buscar":{
+                TelaPesquisa pesquisa = new TelaPesquisa();
+                pesquisa.setVisible(true);
+                break;
+            }
+            case "editar":{
+                System.out.println("Abrindo Tela de Editar");
+                break;
+            }
+            case "excluir":{
+                String titulo = txtFieldTitulo.getText();
 
-            if(!titulo.isEmpty())
-                baseDeDados.ExcluirLivro(titulo);
-            txtFieldTitulo.setText("");
+                if(!titulo.isEmpty())
+                    baseDeDados.ExcluirLivro(titulo);
+                txtFieldTitulo.setText("");
+                break;
+            }
         }
     }
 }

@@ -1,4 +1,4 @@
-public class Conta { //TESTE
+public class Conta {
     private String nomeUsuario;
     private String senha;
 

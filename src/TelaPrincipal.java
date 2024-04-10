@@ -10,7 +10,7 @@ public class TelaPrincipal extends javax.swing.JFrame implements ActionListener 
     private JButton btnCadastro;
 
     public TelaPrincipal() {
-        setTitle("MainMenu");
+        setTitle("Tela Principal");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setSize(500, 250);
