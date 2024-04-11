@@ -20,7 +20,7 @@ public class TelaCadastroLivro extends javax.swing.JFrame implements ActionListe
     private JButton btnBuscarLivro;
     private JButton btnEditarLivro;
     private JButton btnExcluirLivro;
-    private LivroBaseDeDados baseDeDados  = new LivroBaseDeDados();
+    public static LivroBaseDeDados baseDeDados  = new LivroBaseDeDados(); //Rever isto...
 
     public TelaCadastroLivro() {
         setTitle("Cadastro de Livros");
@@ -88,7 +88,7 @@ public class TelaCadastroLivro extends javax.swing.JFrame implements ActionListe
                     System.out.println("Erro ao Adicionar Livro");
                 }else{
                     int prazo = Integer.parseInt(txtPrazoDeEntrega.getText());
-                    Livro novoLivro = new Livro(0, titulo, categoria, autor, ISBN, prazo, disponivel);
+                    Livro novoLivro = new Livro(titulo, categoria, autor, ISBN, prazo, disponivel);
                     novoLivro.setDisponibilidade(disponivel);
                     baseDeDados.AdicionarLivro(novoLivro);
                 }

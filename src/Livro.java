@@ -1,5 +1,6 @@
 public class Livro {
-    private static int ID = 0;
+    private static int IDcount = 0;
+    private int ID;
     private String titulo;
     private String categoria;
     private String autor;
@@ -7,8 +8,9 @@ public class Livro {
     private int prazoDeEntrega;
     private boolean disponivel;
 
-    public Livro(int id, String titulo, String categoria, String autor, String ISBN, int prazoDeEntrega, boolean disponivel) {
-        Livro.ID++;
+    public Livro(String titulo, String categoria, String autor, String ISBN, int prazoDeEntrega, boolean disponivel) {
+        this.ID = Livro.IDcount;
+        Livro.IDcount++;
         this.titulo = titulo;
         this.categoria = categoria;
         this.autor = autor;
@@ -23,6 +25,26 @@ public class Livro {
 
     public String getTitulo() {
         return this.titulo;
+    }
+
+    public String getCategoria() {
+        return this.categoria;
+    }
+
+    public String getAutor() {
+        return this.autor;
+    }
+
+    public String getISBN() {
+        return this.ISBN;
+    }
+
+    public int getPrazoDeEntrega() {
+        return this.prazoDeEntrega;
+    }
+
+    public boolean isDisponivel() {
+        return this.disponivel;
     }
 
     public void setPrazoDeEntrega(int prazoDeEntrega) {

@@ -41,7 +41,8 @@ public class TelaPrincipal extends javax.swing.JFrame implements ActionListener 
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getActionCommand().equals("pesquisar")) {
-            System.out.println("Abrindo Tela de Pesquisa");
+            TelaPesquisa pesquisa = new TelaPesquisa();
+            pesquisa.setVisible(true);
         }
         if(e.getActionCommand().equals("devolver")) {
             System.out.println("Abrindo Tela de Devolver");
