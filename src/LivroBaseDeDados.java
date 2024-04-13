@@ -9,6 +9,21 @@ public class LivroBaseDeDados {
         System.out.println("Livro adicionado");
     }
 
+    public DefaultTableModel MostrarTodosOsLivros(DefaultTableModel model){
+        Object[] resultado = new Object[7];
+        for(Livro l : livros){
+            resultado[0] = l.getID();
+            resultado[1] = l.getTitulo();
+            resultado[2] = l.getCategoria();
+            resultado[3] = l.getAutor();
+            resultado[4] = l.getISBN();
+            resultado[5] = l.getPrazoDeEntrega();
+            resultado[6] = l.isDisponivel();
+            model.addRow(resultado);
+        }
+        return model;
+    }
+
     public DefaultTableModel BuscarLivrosPorTitulo(String titulo, DefaultTableModel model){ //Read
         Object[] resultado = new Object[7];
         for(Livro l : livros){
@@ -81,17 +96,23 @@ public class LivroBaseDeDados {
         return model;
     }
 
-    public void EditarLivro(Livro livro){ //Update
+    public void EditarLivro(int id, String titulo, String categoria, String autor, String isbn, int prazo, boolean disponibilidade){ //Update
         for(Livro l : livros){
-            if(l.getID() == livro.getID()){
+            if(l.getID() == id){
+                l.setTitulo(titulo);
+                l.setCategoria(categoria);
+                l.setAutor(autor);
+                l.setISBN(isbn);
+                l.setPrazoDeEntrega(prazo);
+                l.setDisponibilidade(disponibilidade);
                 System.out.println("Livro editado");
             }
         }
         System.out.println("Livro não encontrado");
     }
-    public void ExcluirLivro(String titulo){ //Delete
+    public void ExcluirLivro(int id){ //Delete
         for(Livro l : livros){
-            if(l.getTitulo().equals(titulo)){
+            if(l.getID() == id){
                 livros.remove(l);
                 System.out.println("Livro excluído");
                 return;

@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 
 public class TelaPesquisa  extends javax.swing.JFrame implements ActionListener{
     private JPanel panelTabela;
-    JScrollPane tabelaScrollPane;
+    private JScrollPane tabelaScrollPane;
     private JPanel panelCampos;
     private JLabel lblTitulo;
     private JLabel lblCategoria;

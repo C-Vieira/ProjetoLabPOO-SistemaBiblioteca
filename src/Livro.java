@@ -47,6 +47,22 @@ public class Livro {
         return this.disponivel;
     }
 
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
+    }
+
+    public void setAutor(String autor) {
+        this.autor = autor;
+    }
+
+    public void setISBN(String ISBN) {
+        this.ISBN = ISBN;
+    }
+
     public void setPrazoDeEntrega(int prazoDeEntrega) {
         this.prazoDeEntrega = prazoDeEntrega;
     }
