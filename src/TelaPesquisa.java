@@ -6,6 +6,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class TelaPesquisa  extends javax.swing.JFrame implements ActionListener{
+
+    /* Classe que define uma tela de pesquisa contendo todos os campos para acomodar os dados de um livro
+       Possui um botão para pesquisa e uma tabela para mostragem de resultados */
+
     private JPanel panelTabela;
     private JScrollPane tabelaScrollPane;
     private JPanel panelCampos;
@@ -52,8 +56,8 @@ public class TelaPesquisa  extends javax.swing.JFrame implements ActionListener{
         btnPesquisar.addActionListener(this);
 
         tblResultados = new JTable();
-        DefaultTableModel tableModel = (DefaultTableModel) tblResultados.getModel();
-        String[] tituloColunas = {"ID", "Titulo", "Categoria", "Autor", "ISBN", "Prazo", "Disponível"};
+        DefaultTableModel tableModel = (DefaultTableModel) tblResultados.getModel(); //Cria um modelo de tabela para que possamos manipular as linhas
+        String[] tituloColunas = {"ID", "Titulo", "Categoria", "Autor", "ISBN", "Prazo", "Disponível"}; //Define o título de cada coluna
         tableModel.setColumnIdentifiers(tituloColunas);
         tabelaScrollPane = new JScrollPane(tblResultados);
         tblResultados.setFillsViewportHeight(true);
@@ -85,17 +89,19 @@ public class TelaPesquisa  extends javax.swing.JFrame implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("pesquisar")) {
             System.out.println("Pesquisando...");
-            DefaultTableModel tableModel = (DefaultTableModel) tblResultados.getModel();
-            tableModel.setRowCount(0);
+            DefaultTableModel tableModel = (DefaultTableModel) tblResultados.getModel(); //Cria um modelo de tabela para que possamos manipular as linhas
+            tableModel.setRowCount(0); //Limpa os resultados anteriores
 
+            //Captura os dados dos campos preenchidos
             String titulo = txtFieldTitulo.getText();
             String categoria = txtFieldCategoria.getText();
             String autor = txtFieldAutor.getText();
             String ISBN = txtFieldISBN.getText();
 
+            //Se o campo estiver preenchido, pesquisamos por este dado, se não, tentamos o próximo
             if(!titulo.isEmpty()) {
-                tableModel = TelaCadastroLivro.baseDeDados.BuscarLivrosPorTitulo(titulo, tableModel);
-                tableModel.fireTableDataChanged();
+                tableModel = TelaCadastroLivro.baseDeDados.BuscarLivrosPorTitulo(titulo, tableModel); //Referencia a base de dados e realiza uma busca
+                tableModel.fireTableDataChanged(); //Atualiza a visualização da tabela com os novos resultados
             } else if (!categoria.isEmpty()) {
                 tableModel = TelaCadastroLivro.baseDeDados.BuscarLivrosPorCategoria(categoria, tableModel);
                 tableModel.fireTableDataChanged();

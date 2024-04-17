@@ -1,4 +1,8 @@
 public class Livro {
+
+    /*  Classe que define um livro e seus dados básicos
+        Contém os métodos de acesso (get, set) necessários */
+
     private static int IDcount = 0;
     private int ID;
     private String titulo;

@@ -7,6 +7,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class TelaCadastroLivro extends javax.swing.JFrame implements ActionListener {
+
+    /* Classe que define uma tela de cadastro de livros, contém todos os campos necessários para criação de um livro
+       Possui um botão para pesquisa e uma tabela para mostragem de resultados
+       Aceita a seleção de linhas na tabela e preenche os campos com os devidos dados para auxílio nas operações de cadastro */
+
     private JPanel panelTabela;
     private JScrollPane tabelaScrollPane;
     private JPanel panelCampos;
@@ -28,7 +33,9 @@ public class TelaCadastroLivro extends javax.swing.JFrame implements ActionListe
     private JButton btnExcluirLivro;
     private JTable tblResultados;
     private int IDSelecionado;
-    public static LivroBaseDeDados baseDeDados  = new LivroBaseDeDados(); //Rever isto...
+
+    //Cria um objeto estático e público de uma base de dados para uso em outras áreas do sistema
+    public static LivroBaseDeDados baseDeDados  = new LivroBaseDeDados();
 
     public TelaCadastroLivro() {
         setTitle("Cadastro de Livros");
@@ -68,8 +75,8 @@ public class TelaCadastroLivro extends javax.swing.JFrame implements ActionListe
 
         tblResultados = new JTable();
         tblResultados.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        DefaultTableModel tableModel = (DefaultTableModel) tblResultados.getModel();
-        String[] tituloColunas = {"ID", "Titulo", "Categoria", "Autor", "ISBN", "Prazo", "Disponível"};
+        DefaultTableModel tableModel = (DefaultTableModel) tblResultados.getModel(); //Cria um modelo de tabela para que possamos manipular as linhas
+        String[] tituloColunas = {"ID", "Titulo", "Categoria", "Autor", "ISBN", "Prazo", "Disponível"}; //Define o título de cada coluna
         tableModel.setColumnIdentifiers(tituloColunas);
 
         ListSelectionModel selectionModel = tblResultados.getSelectionModel();
@@ -103,14 +110,17 @@ public class TelaCadastroLivro extends javax.swing.JFrame implements ActionListe
         add(panelCampos);
     }
 
+    /*  Este método lida com a seleção de linhas na tabela
+        Faz a coleta dos dados em cada célula da linha selecionada e atualiza os campos correspondentes */
     private void handleSelectionEvent(ListSelectionEvent e) {
         if (e.getValueIsAdjusting())
             return;
 
         int i = tblResultados.getSelectedRow();
 
-        if(i < 0) return;
+        if(i < 0) return; //Se a tabela estiver vazia, retorne
 
+        //Coleta e conversão dos dados
         int id = (int) tblResultados.getValueAt(i, 0);
         String titulo = (String) tblResultados.getValueAt(i, 1);
         String categoria = (String) tblResultados.getValueAt(i, 2);
@@ -119,6 +129,7 @@ public class TelaCadastroLivro extends javax.swing.JFrame implements ActionListe
         int prazo = (int) tblResultados.getValueAt(i, 5);
         boolean disponibilidade = (boolean) tblResultados.getValueAt(i, 6);
 
+        //Atualização dos campos
         IDSelecionado = id;
         txtFieldTitulo.setText(titulo);
         txtFieldCategoria.setText(categoria);
@@ -130,8 +141,10 @@ public class TelaCadastroLivro extends javax.swing.JFrame implements ActionListe
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        tblResultados.clearSelection();
-        DefaultTableModel tableModel = (DefaultTableModel) tblResultados.getModel();
+        tblResultados.clearSelection(); //Limpa a seleção na tabela
+        DefaultTableModel tableModel = (DefaultTableModel) tblResultados.getModel(); //Cria um modelo de tabela para que possamos manipular as linhas
+
+        //Coleta dos dados preenchidos
         String titulo = txtFieldTitulo.getText();
         String categoria = txtFieldCategoria.getText();
         String autor = txtFieldAutor.getText();
@@ -144,19 +157,22 @@ public class TelaCadastroLivro extends javax.swing.JFrame implements ActionListe
                 if(titulo.isEmpty() || categoria.isEmpty() || autor.isEmpty() || ISBN.isEmpty() || prazoTexto.isEmpty()) {
                     System.out.println("Erro ao Adicionar Livro");
                 }else{
-                    int prazo = Integer.parseInt(txtPrazoDeEntrega.getText());
-                    Livro novoLivro = new Livro(titulo, categoria, autor, ISBN, prazo, disponivel);
-                    novoLivro.setDisponibilidade(disponivel);
-                    baseDeDados.AdicionarLivro(novoLivro);
+                    int prazo = Integer.parseInt(txtPrazoDeEntrega.getText()); //Conversão de string para inteiro
+                    Livro novoLivro = new Livro(titulo, categoria, autor, ISBN, prazo, disponivel); //Cria uma nova instância de livro
+                    novoLivro.setDisponibilidade(disponivel); //Atualiza disponibilidade
+                    baseDeDados.AdicionarLivro(novoLivro); //Adiocina livro na base de dados
                 }
+                //Atualização da visualização da tabela
                 tableModel.setRowCount(0);
                 tableModel = baseDeDados.MostrarTodosOsLivros(tableModel);
                 tableModel.fireTableDataChanged();
-                IDSelecionado = -1;
+                IDSelecionado = -1; //Resetamos o ID selecionado para evitar erros
                 break;
             }
             case "buscar":{
                 tableModel.setRowCount(0);
+
+                //Se o campo estiver preenchido, pesquisamos por este dado, se não, tentamos o próximo
                 if(!titulo.isEmpty()) {
                     tableModel = baseDeDados.BuscarLivrosPorTitulo(titulo, tableModel);
                     tableModel.fireTableDataChanged();
@@ -179,18 +195,20 @@ public class TelaCadastroLivro extends javax.swing.JFrame implements ActionListe
                     System.out.println("Erro ao Editar Livro");
                     break;
                 }
-                int prazo = Integer.parseInt(txtPrazoDeEntrega.getText());
-                baseDeDados.EditarLivro(IDSelecionado, titulo, categoria, autor, ISBN, prazo, disponivel);
+                int prazo = Integer.parseInt(txtPrazoDeEntrega.getText()); //Conversão de string para inteiro
+                baseDeDados.EditarLivro(IDSelecionado, titulo, categoria, autor, ISBN, prazo, disponivel); //Atualiza informações de um certo livro por ID
 
+                //Atualização da visualização da tabela
                 tableModel.setRowCount(0);
                 tableModel = baseDeDados.MostrarTodosOsLivros(tableModel);
                 tableModel.fireTableDataChanged();
-                IDSelecionado = -1;
+                IDSelecionado = -1; //Resetamos o ID selecionado para evitar erros
                 break;
             }
             case "excluir":{
-                baseDeDados.ExcluirLivro(IDSelecionado);
+                baseDeDados.ExcluirLivro(IDSelecionado); //Exclui o livro correspondente ao id selecionado da base de dados
 
+                //Atualização da visualização da tabela
                 tableModel.setRowCount(0);
                 tableModel = baseDeDados.MostrarTodosOsLivros(tableModel);
                 tableModel.fireTableDataChanged();

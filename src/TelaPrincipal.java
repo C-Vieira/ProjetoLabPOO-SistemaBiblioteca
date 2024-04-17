@@ -5,6 +5,10 @@ import java.awt.event.ActionListener;
 import java.security.Principal;
 
 public class TelaPrincipal extends javax.swing.JFrame implements ActionListener {
+
+    /*  Classe que define uma tela contendo três botões (pesquisa, devolução, cadastro)
+        Usada para navegação no sistema */
+
     private JButton btnPesquisa;
     private JButton btnDevolucao;
     private JButton btnCadastro;
@@ -41,14 +45,14 @@ public class TelaPrincipal extends javax.swing.JFrame implements ActionListener 
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getActionCommand().equals("pesquisar")) {
-            TelaPesquisa pesquisa = new TelaPesquisa();
+            TelaPesquisa pesquisa = new TelaPesquisa(); //Cria uma nova tela de pesquisa
             pesquisa.setVisible(true);
         }
         if(e.getActionCommand().equals("devolver")) {
-            System.out.println("Abrindo Tela de Devolver");
+            System.out.println("Abrindo Tela de Devolver"); //Cria uma nova tela de devolução
         }
         if(e.getActionCommand().equals("cadastrar")) {
-           TelaCadastroLivro cadastro = new TelaCadastroLivro();
+           TelaCadastroLivro cadastro = new TelaCadastroLivro(); //Cria uma nova tela de cadastro (acesse restrito para administradores)
            cadastro.setVisible(true);
         }
     }
