@@ -40,6 +40,9 @@ public class TelaPrincipal extends javax.swing.JFrame implements ActionListener 
         add(new JLabel(""));
         add(btnCadastro);
         add(new JLabel(""));
+
+        if (!UsuarioBaseDeDados.getUsuarioAtual().equals("admin"))
+            btnCadastro.setEnabled(false);
     }
 
     @Override

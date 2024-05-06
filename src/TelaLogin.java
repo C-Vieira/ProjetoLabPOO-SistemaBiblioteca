@@ -9,7 +9,7 @@ public class TelaLogin extends JFrame implements ActionListener {
     private JTextField txtFieldUsuario;
     private JPasswordField passFieldSenha;
     private JButton btnLogin;
-    private ContaBaseDeDados baseDeDados  = new ContaBaseDeDados();
+    private UsuarioBaseDeDados baseDeDados  = new UsuarioBaseDeDados();
 
     public TelaLogin() {
         setTitle("Login");
@@ -34,32 +34,35 @@ public class TelaLogin extends JFrame implements ActionListener {
         add(new JLabel(""));
         add(btnLogin);
 
-        Conta contaAdmin = new Conta("admin", "admin");
-        Usuario admin = new Usuario(0,"admin", " ", " ",
-                " ", true, contaAdmin);
+        Usuario admin = new Usuario(0,"admin", "admin", " ", " ",
+                " ", true);
+        Usuario caio = new Usuario(1,"caio", "123", " ", " ",
+                " ", false);
 
-        baseDeDados.AdicionarConta(contaAdmin);
+        baseDeDados.AdicionarUsuario(admin);
+        baseDeDados.AdicionarUsuario(caio);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getActionCommand().equals("login")) {
-            String usuario = txtFieldUsuario.getText();
+            String nomeUsuario = txtFieldUsuario.getText();
             String senha = passFieldSenha.getText();
-            Conta conta = baseDeDados.BuscarConta(usuario);
+            Usuario usuario = baseDeDados.BuscarUsuario(nomeUsuario);
 
-            if(conta != null){
-                if(conta.VerificaSenha(senha)){
+            if(nomeUsuario != null){
+                if(usuario.VerificaSenha(senha)){
                     System.out.println("Usuário Autenticado");
+                    UsuarioBaseDeDados.setUsuarioAtual(nomeUsuario);
 
                     TelaPrincipal main = new TelaPrincipal();
                     main.setVisible(true);
                 }
             }else {
                 System.out.println("Usuario Inválido");
-                txtFieldUsuario.setText("");
-                passFieldSenha.setText("");
             }
+            txtFieldUsuario.setText("");
+            passFieldSenha.setText("");
         }
     }
 }
