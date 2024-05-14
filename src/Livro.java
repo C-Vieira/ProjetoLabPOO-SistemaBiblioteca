@@ -1,20 +1,36 @@
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "book")
 public class Livro {
 
     /*  Classe que define um livro e seus dados básicos
         Contém os métodos de acesso (get, set) necessários */
 
-    private static int IDcount = 0;
+    @Id
+    @SequenceGenerator(name = "seq", sequenceName = "seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
     private int ID;
     private String titulo;
     private String categoria;
     private String autor;
     private String ISBN;
-    private int prazoDeEntrega;
+    private String prazoDeEntrega;
     private boolean disponivel;
 
-    public Livro(String titulo, String categoria, String autor, String ISBN, int prazoDeEntrega, boolean disponivel) {
-        this.ID = Livro.IDcount;
-        Livro.IDcount++;
+    public Livro() {}
+
+    public Livro(int id, String titulo, String categoria, String autor, String ISBN, String prazoDeEntrega, boolean disponivel) {
+        this.ID = id;
+        this.titulo = titulo;
+        this.categoria = categoria;
+        this.autor = autor;
+        this.ISBN = ISBN;
+        this.prazoDeEntrega = prazoDeEntrega;
+        this.disponivel = disponivel;
+    }
+
+    public Livro(String titulo, String categoria, String autor, String ISBN, String prazoDeEntrega, boolean disponivel) {
         this.titulo = titulo;
         this.categoria = categoria;
         this.autor = autor;
@@ -43,12 +59,16 @@ public class Livro {
         return this.ISBN;
     }
 
-    public int getPrazoDeEntrega() {
+    public String getPrazoDeEntrega() {
         return this.prazoDeEntrega;
     }
 
     public boolean isDisponivel() {
         return this.disponivel;
+    }
+
+    public void setID(int id) {
+        this.ID = id;
     }
 
     public void setTitulo(String titulo) {
@@ -67,7 +87,7 @@ public class Livro {
         this.ISBN = ISBN;
     }
 
-    public void setPrazoDeEntrega(int prazoDeEntrega) {
+    public void setPrazoDeEntrega(String prazoDeEntrega) {
         this.prazoDeEntrega = prazoDeEntrega;
     }
 

@@ -1,6 +1,12 @@
 import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
 
+//  !   !   !   !   !   !  //
+
+// !CLASSE DESCONTINUADA!  //
+
+//  !   !   !   !   !   !  //
+
 public class LivroBaseDeDados {
 
     /* Classe que define uma base de dados, contendo uma lista de livros
@@ -107,7 +113,7 @@ public class LivroBaseDeDados {
     }
 
     //Busca por ID e atualiza todos os campos de um livro correspondente
-    public void EditarLivro(int id, String titulo, String categoria, String autor, String isbn, int prazo, boolean disponibilidade){ //Update
+    public void EditarLivro(int id, String titulo, String categoria, String autor, String isbn, String prazo, boolean disponibilidade){ //Update
         for(Livro l : livros){
             if(l.getID() == id){
                 l.setTitulo(titulo);
