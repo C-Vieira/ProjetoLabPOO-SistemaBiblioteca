@@ -30,7 +30,7 @@ public class TelaPesquisa  extends javax.swing.JFrame implements ActionListener{
 
     public TelaPesquisa() {
         setTitle("Pesquisar");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         setLocationRelativeTo(null);
         setSize(1000, 400);
         setLayout(new GridLayout(1, 2));

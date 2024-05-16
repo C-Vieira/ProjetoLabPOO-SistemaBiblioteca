@@ -1,5 +1,3 @@
-import javax.swing.*;
-
 public class LivroController {
     private final TelaCadastroLivro livroView;
     private final LivroDAO livroDAO;
@@ -40,7 +38,8 @@ public class LivroController {
         } else if (!ISBN.isEmpty()) {
             livroDAO.buscarLivroPorISBN(ISBN);
         }else{
-            JOptionPane.showMessageDialog(livroView, "Livro não encontrado...", "Erro", JOptionPane.ERROR_MESSAGE);
+            livroView.mostrarMensagemDeErro("Livro não encontrado...");
+            livroView.atualizaDados();
             System.out.println("Livro não encontrado");
         }
     }

@@ -3,37 +3,37 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-public class TelaCadastroLivro extends TelaBase implements LivroListener {
+public class TelaCadastroUsuario extends TelaBase implements UsuarioListener {
 
-    /* Classe que define uma tela de cadastro de livros, contém todos os campos necessários para criação de um livro
+    /* Classe que define uma tela de cadastro de usuários, contém todos os campos necessários para criação de um usuário
        Possui um botão para pesquisa e uma tabela para mostragem de resultados
        Aceita a seleção de linhas na tabela e preenche os campos com os devidos dados para auxílio nas operações de cadastro */
 
-    private final LivroDAO livroDAO;
-    private final LivroController livroController;
+    private final UsuarioDAO usuarioDAO;
+    private final UsuarioController usuarioController;
 
-    public TelaCadastroLivro() {
-        super("Cadastro de Livros");
+    public TelaCadastroUsuario() {
+        super("Cadastro de Usuários");
 
-        livroDAO = new LivroDAO();
-        livroDAO.subscribe(this);
-        livroController = new LivroController(this, livroDAO);
+        usuarioDAO = new UsuarioDAO();
+        usuarioDAO.subscribe(this);
+        usuarioController = new UsuarioController(this, usuarioDAO);
 
-        lblCampo1.setText("Título:");
-        lblCampo2.setText("Categoria:");
-        lblCampo3.setText("Autor:");
-        lblCampo4.setText("ISBN:");
-        lblCampo5.setText("Prazo de Entrega (em dias):");
-        lblCampo6.setText("Status de Disponibilidade:");
+        lblCampo1.setText("Nome:");
+        lblCampo2.setText("Senha:");
+        lblCampo3.setText("CPF:");
+        lblCampo4.setText("RG:");
+        lblCampo5.setText("Email:");
+        lblCampo6.setText("Admin:");
 
-        radioBtn.setText("Disponível");
+        radioBtn.setText("Sim");
         radioBtn.setSelected(false);
 
         btn1.setText("Adicionar");
         btn1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                adicionaLivro();
+                adicionaUsuario();
             }
         });
 
@@ -41,7 +41,7 @@ public class TelaCadastroLivro extends TelaBase implements LivroListener {
         btn2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                buscarLivro();
+                buscarUsuario();
             }
         });
 
@@ -49,7 +49,7 @@ public class TelaCadastroLivro extends TelaBase implements LivroListener {
         btn3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                editarLivro();
+                editarUsuario();
             }
         });
 
@@ -57,11 +57,11 @@ public class TelaCadastroLivro extends TelaBase implements LivroListener {
         btn4.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                excluirLivro();
+                excluirUsuario();
             }
         });
 
-        String[] tituloColunas = {"ID", "Titulo", "Categoria", "Autor", "ISBN", "Prazo", "Disponível"}; //Define o título de cada coluna
+        String[] tituloColunas = {"ID", "Nome", "Senha", "CPF", "RG", "Email", "Admin"}; //Define o título de cada coluna
         tableModel.setColumnIdentifiers(tituloColunas);
 
         recarregarTabela();
@@ -70,10 +70,10 @@ public class TelaCadastroLivro extends TelaBase implements LivroListener {
     private void recarregarTabela() {
         //Atualização da visualização da tabela
         tableModel.setRowCount(0);
-        List<Livro> livros = livroDAO.getLivros();
-        for (Livro livro : livros) {
-            tableModel.addRow(new Object[]{livro.getID(), livro.getTitulo(), livro.getCategoria(),
-                    livro.getAutor(), livro.getISBN(), livro.getPrazoDeEntrega(), livro.isDisponivel()});
+        List<Usuario> usuarios = usuarioDAO.getUsuarios();
+        for (Usuario usuario : usuarios) {
+            tableModel.addRow(new Object[]{usuario.getID(), usuario.getNome(), usuario.getSenha(),
+                    usuario.getCPF(), usuario.getRG(), usuario.getEmail(), usuario.isAdmin()});
         }
         tableModel.fireTableDataChanged();
         IDSelecionado = -1; //Resetamos o ID selecionado para evitar erros
@@ -93,20 +93,20 @@ public class TelaCadastroLivro extends TelaBase implements LivroListener {
         return dados;
     }
 
-    private void adicionaLivro(){
-        livroController.adicionaLivro(coletaDados());
+    private void adicionaUsuario(){
+        usuarioController.adicionaUsuario(coletaDados());
     }
 
-    private void buscarLivro(){
-        livroController.buscarLivro(coletaDados());
+    private void buscarUsuario(){
+        usuarioController.buscarUsuario(coletaDados());
     }
 
-    private void editarLivro(){
-        livroController.editarLivro(IDSelecionado, coletaDados());
+    private void editarUsuario(){
+        usuarioController.editarUsuario(IDSelecionado, coletaDados());
     }
 
-    private void excluirLivro(){
-        livroController.excluirLivro(IDSelecionado, coletaDados());
+    private void excluirUsuario(){
+        usuarioController.excluirUsuario(IDSelecionado, coletaDados());
     }
 
     private void limparCampos(){
@@ -125,11 +125,11 @@ public class TelaCadastroLivro extends TelaBase implements LivroListener {
     }
 
     @Override
-    public void mostrarResultados(List<Livro> resultado) {
+    public void mostrarResultados(List<Usuario> resultado) {
         tableModel.setRowCount(0);
-        for (Livro livro : resultado) {
-            tableModel.addRow(new Object[]{livro.getID(), livro.getTitulo(), livro.getCategoria(),
-                    livro.getAutor(), livro.getISBN(), livro.getPrazoDeEntrega(), livro.isDisponivel()});
+        for (Usuario usuario : resultado) {
+            tableModel.addRow(new Object[]{usuario.getID(), usuario.getNome(), usuario.getSenha(),
+                    usuario.getCPF(), usuario.getRG(), usuario.getRG(), usuario.isAdmin()});
         }
         tableModel.fireTableDataChanged();
         limparCampos();

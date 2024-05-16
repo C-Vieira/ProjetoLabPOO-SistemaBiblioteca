@@ -1,5 +1,11 @@
 import java.util.ArrayList;
 
+//  !   !   !   !   !   !  //
+
+// !CLASSE DESCONTINUADA!  //
+
+//  !   !   !   !   !   !  //
+
 public class UsuarioBaseDeDados {
     private ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
     private static String usuarioAtual;

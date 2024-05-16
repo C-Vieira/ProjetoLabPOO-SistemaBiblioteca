@@ -2,8 +2,6 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public abstract class TelaBase extends javax.swing.JFrame {
 
@@ -37,7 +35,7 @@ public abstract class TelaBase extends javax.swing.JFrame {
 
     public TelaBase(String title) {
         setTitle(title);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         setLocationRelativeTo(null);
         setSize(1000, 400);
         setLayout(new GridLayout(1, 2));

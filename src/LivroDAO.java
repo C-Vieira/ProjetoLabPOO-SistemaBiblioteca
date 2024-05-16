@@ -1,6 +1,8 @@
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.hibernate.query.SelectionQuery;
+
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +16,12 @@ public class LivroDAO {
     private void notificarLivros() {
         for (LivroListener livroListener : livroListeners) {
             livroListener.atualizaDados();
+        }
+    }
+
+    private void notificarErro(){
+        for (LivroListener livroListener : livroListeners) {
+            livroListener.mostrarMensagemDeErro("Livro não encontrado...");
         }
     }
 
@@ -42,6 +50,10 @@ public class LivroDAO {
             result = DatabaseManager.getDatabaseSessionFactory().fromTransaction(session -> {
                 SelectionQuery<Livro> query = session.createSelectionQuery("from Livro where titulo = :livroTitulo", Livro.class);
                 query.setParameter("livroTitulo", livroTitulo);
+                if (query.getResultList().isEmpty()) {
+                    notificarErro();
+                    return getLivros();
+                }
                 return query.getResultList();
             });
             notificarBusca(result);
@@ -56,6 +68,10 @@ public class LivroDAO {
             result = DatabaseManager.getDatabaseSessionFactory().fromTransaction(session -> {
                 SelectionQuery<Livro> query = session.createSelectionQuery("from Livro where categoria = :livroCategoria", Livro.class);
                 query.setParameter("livroCategoria", livroCategoria);
+                if (query.getResultList().isEmpty()) {
+                    notificarErro();
+                    return getLivros();
+                }
                 return query.getResultList();
             });
             notificarBusca(result);
@@ -70,6 +86,10 @@ public class LivroDAO {
             result = DatabaseManager.getDatabaseSessionFactory().fromTransaction(session -> {
                 SelectionQuery<Livro> query = session.createSelectionQuery("from Livro where autor = :livroAutor", Livro.class);
                 query.setParameter("livroAutor", livroAutor);
+                if (query.getResultList().isEmpty()) {
+                    notificarErro();
+                    return getLivros();
+                }
                 return query.getResultList();
             });
             notificarBusca(result);
@@ -84,6 +104,10 @@ public class LivroDAO {
             result = DatabaseManager.getDatabaseSessionFactory().fromTransaction(session -> {
                 SelectionQuery<Livro> query = session.createSelectionQuery("from Livro where ISBN = :livroISBN", Livro.class);
                 query.setParameter("livroISBN", livroISBN);
+                if (query.getResultList().isEmpty()) {
+                    notificarErro();
+                    return getLivros();
+                }
                 return query.getResultList();
             });
             notificarBusca(result);
