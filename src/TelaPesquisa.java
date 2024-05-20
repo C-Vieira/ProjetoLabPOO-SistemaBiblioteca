@@ -1,126 +1,87 @@
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
-public class TelaPesquisa  extends javax.swing.JFrame implements ActionListener{
+public class TelaPesquisa  extends TelaBase{
 
     /* Classe que define uma tela de pesquisa contendo todos os campos para acomodar os dados de um livro
        Possui um botão para pesquisa e uma tabela para mostragem de resultados */
 
-    private JPanel panelTabela;
-    private JScrollPane tabelaScrollPane;
-    private JPanel panelCampos;
-    private JLabel lblTitulo;
-    private JLabel lblCategoria;
-    private JLabel lblAutor;
-    private JLabel lblISBN;
-    private JLabel lblPrazoDeEntrega;
-    private JLabel lblDisponibilidade;
-    private JTextField txtFieldTitulo;
-    private JTextField txtFieldCategoria;
-    private JTextField txtFieldAutor;
-    private JTextField txtFieldISBN;
-    private JTextField txtPrazoDeEntrega;
-    private JRadioButton radioBtnDisponivel;
-    private JButton btnPesquisar;
-    private JTable tblResultados;
+    private final LivroDAO livroDAO;
 
     public TelaPesquisa() {
-        setTitle("Pesquisar");
-        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-        setLocationRelativeTo(null);
-        setSize(1000, 400);
-        setLayout(new GridLayout(1, 2));
+        super("Empréstimos");
 
-        panelTabela = new JPanel();
-        panelCampos = new JPanel();
+        livroDAO = new LivroDAO();
 
-        lblTitulo = new JLabel("Título:");
-        lblCategoria = new JLabel("Categoria:");
-        lblAutor = new JLabel("Autor:");
-        lblISBN = new JLabel("ISBN:");
-        lblPrazoDeEntrega = new JLabel("Prazo de Entrega (em dias):");
-        lblDisponibilidade = new JLabel("Status de Disponibilidade:");
-        txtFieldTitulo = new JTextField();
-        txtFieldCategoria = new JTextField();
-        txtFieldAutor = new JTextField();
-        txtFieldISBN = new JTextField();
-        txtPrazoDeEntrega = new JTextField();
-        radioBtnDisponivel = new JRadioButton("Disponivel", false);
-        btnPesquisar = new JButton("Pesquisar");
+        lblCampo1.setText("Título:");
+        lblCampo2.setText("Categoria:");
+        lblCampo3.setText("Autor:");
+        lblCampo4.setText("ISBN:");
+        lblCampo5.setText("Prazo de Entrega (em dias):");
+        lblCampo6.setText("Status de Disponibilidade:");
 
-        btnPesquisar.setActionCommand("pesquisar");
-        btnPesquisar.addActionListener(this);
+        radioBtn.setText("Disponível");
+        radioBtn.setSelected(false);
 
-        tblResultados = new JTable();
-        DefaultTableModel tableModel = (DefaultTableModel) tblResultados.getModel(); //Cria um modelo de tabela para que possamos manipular as linhas
+        btnHeader1.setText("Mostrar Empréstimos");
+        btnHeader1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //carrega tabela com empréstimos
+            }
+        });
+
+        btnHeader2.setVisible(false);
+
+        btn1.setText("Pesquisar");
+        btn1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //pesquisar
+            }
+        });
+
+        btn2.setText("Emprestar para:");
+        btn2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //carregar tabela com usuários
+            }
+        });
+
+        btn3.setText("Emprestar");
+        btn3.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //criar novo empréstimo
+            }
+        });
+
+        btn4.setText("Devolver");
+        btn4.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //devolver
+            }
+        });
+
         String[] tituloColunas = {"ID", "Titulo", "Categoria", "Autor", "ISBN", "Prazo", "Disponível"}; //Define o título de cada coluna
         tableModel.setColumnIdentifiers(tituloColunas);
-        tabelaScrollPane = new JScrollPane(tblResultados);
-        tblResultados.setFillsViewportHeight(true);
 
-        panelTabela.add(tabelaScrollPane);
-
-        panelCampos.setLayout(new GridLayout(7, 2));
-
-        panelCampos.add(lblTitulo);
-        panelCampos.add(txtFieldTitulo);
-        panelCampos.add(lblCategoria);
-        panelCampos.add(txtFieldCategoria);
-        panelCampos.add(lblAutor);
-        panelCampos.add(txtFieldAutor);
-        panelCampos.add(lblISBN);
-        panelCampos.add(txtFieldISBN);
-        panelCampos.add(lblPrazoDeEntrega);
-        panelCampos.add(txtPrazoDeEntrega);
-        panelCampos.add(lblDisponibilidade);
-        panelCampos.add(radioBtnDisponivel);
-        panelCampos.add(new JLabel(""));
-        panelCampos.add(btnPesquisar);
-
-        add(panelTabela);
-        add(panelCampos);
+        recarregarTabela();
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getActionCommand().equals("pesquisar")) {
-            System.out.println("Pesquisando...");
-            DefaultTableModel tableModel = (DefaultTableModel) tblResultados.getModel(); //Cria um modelo de tabela para que possamos manipular as linhas
-            tableModel.setRowCount(0); //Limpa os resultados anteriores
-
-            //Captura os dados dos campos preenchidos
-            String titulo = txtFieldTitulo.getText();
-            String categoria = txtFieldCategoria.getText();
-            String autor = txtFieldAutor.getText();
-            String ISBN = txtFieldISBN.getText();
-
-            //Se o campo estiver preenchido, pesquisamos por este dado, se não, tentamos o próximo
-            if(!titulo.isEmpty()) {
-                tableModel = TelaCadastroLivro.baseDeDados.BuscarLivrosPorTitulo(titulo, tableModel); //Referencia a base de dados e realiza uma busca
-                tableModel.fireTableDataChanged(); //Atualiza a visualização da tabela com os novos resultados
-            } else if (!categoria.isEmpty()) {
-                tableModel = TelaCadastroLivro.baseDeDados.BuscarLivrosPorCategoria(categoria, tableModel);
-                tableModel.fireTableDataChanged();
-            } else if (!autor.isEmpty()) {
-                tableModel = TelaCadastroLivro.baseDeDados.BuscarLivrosPorAutor(autor, tableModel);
-                tableModel.fireTableDataChanged();
-            } else if (!ISBN.isEmpty()) {
-                tableModel = TelaCadastroLivro.baseDeDados.BuscarLivrosPorISBN(ISBN, tableModel);
-                tableModel.fireTableDataChanged();
-            }else{
-                System.out.println("Livro não encontrado");
-            }
-
-            txtFieldTitulo.setText("");
-            txtFieldCategoria.setText("");
-            txtFieldAutor.setText("");
-            txtFieldISBN.setText("");
-            txtPrazoDeEntrega.setText("");
-            radioBtnDisponivel.setSelected(false);
+    private void recarregarTabela() {
+        //Atualização da visualização da tabela
+        tableModel.setRowCount(0);
+        List<Livro> livros = livroDAO.getLivros();
+        for (Livro livro : livros) {
+            tableModel.addRow(new Object[]{livro.getID(), livro.getTitulo(), livro.getCategoria(),
+                    livro.getAutor(), livro.getISBN(), livro.getPrazoDeEntrega(), livro.isDisponivel()});
         }
+        tableModel.fireTableDataChanged();
+        IDSelecionado = -1; //Resetamos o ID selecionado para evitar erros
     }
+
 }

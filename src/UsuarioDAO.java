@@ -4,26 +4,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UsuarioDAO {
-    private final List<UsuarioListener> usuarioListeners = new ArrayList<>();
+    private final List<CadastroListener> usuarioListeners = new ArrayList<>();
 
-    public void subscribe(UsuarioListener usuarioListener) {
+    public void subscribe(CadastroListener usuarioListener) {
         usuarioListeners.add(usuarioListener);
     }
 
     private void notificarUsuarios() {
-        for (UsuarioListener usuarioListener : usuarioListeners) {
+        for (CadastroListener usuarioListener : usuarioListeners) {
             usuarioListener.atualizaDados();
         }
     }
 
     private void notificarErro(){
-        for (UsuarioListener usuarioListener : usuarioListeners) {
+        for (CadastroListener usuarioListener : usuarioListeners) {
             usuarioListener.mostrarMensagemDeErro("Usuário não encontrado...");
         }
     }
 
     private void notificarBusca(List<Usuario> usuarios){
-        for (UsuarioListener usuarioListener : usuarioListeners) {
+        for (CadastroListener usuarioListener : usuarioListeners) {
             usuarioListener.mostrarResultados(usuarios);
         }
     }

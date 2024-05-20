@@ -1,13 +1,13 @@
-import javax.swing.*;
+/*import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
 public class TelaCadastroUsuario extends TelaBase implements UsuarioListener {
 
-    /* Classe que define uma tela de cadastro de usuários, contém todos os campos necessários para criação de um usuário
+     Classe que define uma tela de cadastro de usuários, contém todos os campos necessários para criação de um usuário
        Possui um botão para pesquisa e uma tabela para mostragem de resultados
-       Aceita a seleção de linhas na tabela e preenche os campos com os devidos dados para auxílio nas operações de cadastro */
+       Aceita a seleção de linhas na tabela e preenche os campos com os devidos dados para auxílio nas operações de cadastro
 
     private final UsuarioDAO usuarioDAO;
     private final UsuarioController usuarioController;
@@ -79,20 +79,6 @@ public class TelaCadastroUsuario extends TelaBase implements UsuarioListener {
         IDSelecionado = -1; //Resetamos o ID selecionado para evitar erros
     }
 
-    private Object[] coletaDados(){
-        Object[] dados = new Object[6];
-
-        //Coleta dos dados preenchidos
-        dados[0] = txtFieldCampo1.getText();
-        dados[1] = txtFieldCampo2.getText();
-        dados[2] = txtFieldCampo3.getText();
-        dados[3] = txtFieldCampo4.getText();
-        dados[4] = txtFieldCampo5.getText();
-        dados[5] = radioBtn.isSelected();
-
-        return dados;
-    }
-
     private void adicionaUsuario(){
         usuarioController.adicionaUsuario(coletaDados());
     }
@@ -107,15 +93,6 @@ public class TelaCadastroUsuario extends TelaBase implements UsuarioListener {
 
     private void excluirUsuario(){
         usuarioController.excluirUsuario(IDSelecionado, coletaDados());
-    }
-
-    private void limparCampos(){
-        txtFieldCampo1.setText("");
-        txtFieldCampo2.setText("");
-        txtFieldCampo3.setText("");
-        txtFieldCampo4.setText("");
-        txtFieldCampo5.setText("");
-        radioBtn.setSelected(false);
     }
 
     @Override
@@ -139,4 +116,4 @@ public class TelaCadastroUsuario extends TelaBase implements UsuarioListener {
     public void mostrarMensagemDeErro(String mensagem) {
         JOptionPane.showMessageDialog(this, mensagem, "Erro", JOptionPane.ERROR_MESSAGE);
     }
-}
+}*/

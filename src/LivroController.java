@@ -1,8 +1,8 @@
 public class LivroController {
-    private final TelaCadastroLivro livroView;
+    private final TelaCadastro livroView;
     private final LivroDAO livroDAO;
 
-    public LivroController(TelaCadastroLivro livroView, LivroDAO livroDAO) {
+    public LivroController(TelaCadastro livroView, LivroDAO livroDAO) {
         this.livroView = livroView;
         this.livroDAO = livroDAO;
     }

@@ -1,8 +1,8 @@
 public class UsuarioController {
-    private final TelaCadastroUsuario usuarioView;
+    private final TelaCadastro usuarioView;
     private final UsuarioDAO usuarioDAO;
 
-    public UsuarioController(TelaCadastroUsuario usuarioView, UsuarioDAO usuarioDAO) {
+    public UsuarioController(TelaCadastro usuarioView, UsuarioDAO usuarioDAO) {
         this.usuarioView = usuarioView;
         this.usuarioDAO = usuarioDAO;
     }

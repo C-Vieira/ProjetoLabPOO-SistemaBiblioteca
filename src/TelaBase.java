@@ -7,6 +7,10 @@ public abstract class TelaBase extends javax.swing.JFrame {
 
     /* Classe que define uma tela básica para pesquisa e cadastro */
 
+    protected JPanel panelHeader;
+    protected JButton btnHeader1;
+    protected JButton btnHeader2;
+    protected JPanel panelPrincipal;
     protected JPanel panelTabela;
     protected JScrollPane tabelaScrollPane;
     protected JPanel panelCampos;
@@ -38,7 +42,16 @@ public abstract class TelaBase extends javax.swing.JFrame {
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         setLocationRelativeTo(null);
         setSize(1000, 400);
-        setLayout(new GridLayout(1, 2));
+        setLayout(new BorderLayout());
+
+        panelHeader = new JPanel(new FlowLayout());
+        btnHeader1 = new JButton();
+        btnHeader2 = new JButton();
+        panelHeader.add(btnHeader1);
+        panelHeader.add(btnHeader2);
+
+        panelPrincipal = new JPanel();
+        panelPrincipal.setLayout(new GridLayout(1, 2));
 
         panelTabela = new JPanel();
         panelCampos = new JPanel();
@@ -91,8 +104,11 @@ public abstract class TelaBase extends javax.swing.JFrame {
         panelCampos.add(btn3);
         panelCampos.add(btn4);
 
-        add(panelTabela);
-        add(panelCampos);
+        panelPrincipal.add(panelTabela);
+        panelPrincipal.add(panelCampos);
+
+        add(panelHeader, BorderLayout.NORTH);
+        add(panelPrincipal, BorderLayout.CENTER);
     }
 
     /*  Este método lida com a seleção de linhas na tabela
@@ -122,6 +138,29 @@ public abstract class TelaBase extends javax.swing.JFrame {
         txtFieldCampo4.setText(campo4);
         txtFieldCampo5.setText(campo5);
         radioBtn.setSelected(campo6);
+    }
+
+    protected Object[] coletaDados(){
+        Object[] dados = new Object[6];
+
+        //Coleta dos dados preenchidos
+        dados[0] = txtFieldCampo1.getText();
+        dados[1] = txtFieldCampo2.getText();
+        dados[2] = txtFieldCampo3.getText();
+        dados[3] = txtFieldCampo4.getText();
+        dados[4] = txtFieldCampo5.getText();
+        dados[5] = radioBtn.isSelected();
+
+        return dados;
+    }
+
+    protected void limparCampos(){
+        txtFieldCampo1.setText("");
+        txtFieldCampo2.setText("");
+        txtFieldCampo3.setText("");
+        txtFieldCampo4.setText("");
+        txtFieldCampo5.setText("");
+        radioBtn.setSelected(false);
     }
 }
 

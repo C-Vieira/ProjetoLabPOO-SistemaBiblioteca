@@ -1,32 +1,29 @@
-import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.hibernate.query.SelectionQuery;
-
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class LivroDAO {
-    private final List<LivroListener> livroListeners = new ArrayList<>();
+    private final List<CadastroListener> livroListeners = new ArrayList<>();
 
-    public void subscribe(LivroListener livroListener) {
+    public void subscribe(CadastroListener livroListener) {
         livroListeners.add(livroListener);
     }
 
     private void notificarLivros() {
-        for (LivroListener livroListener : livroListeners) {
+        for (CadastroListener livroListener : livroListeners) {
             livroListener.atualizaDados();
         }
     }
 
     private void notificarErro(){
-        for (LivroListener livroListener : livroListeners) {
+        for (CadastroListener livroListener : livroListeners) {
             livroListener.mostrarMensagemDeErro("Livro não encontrado...");
         }
     }
 
     private void notificarBusca(List<Livro> livros){
-        for (LivroListener livroListener : livroListeners) {
+        for (CadastroListener livroListener : livroListeners) {
             livroListener.mostrarResultados(livros);
         }
     }

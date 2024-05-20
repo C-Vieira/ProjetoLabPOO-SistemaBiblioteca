@@ -1,7 +1,7 @@
 import java.util.List;
 
-public interface UsuarioListener {
+public interface CadastroListener {
     void atualizaDados();
-    void mostrarResultados(List<Usuario> resultado);
+    <T> void mostrarResultados(List<T> resultado);
     void mostrarMensagemDeErro(String mensagem);
 }
