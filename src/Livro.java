@@ -8,6 +8,7 @@ public class Livro {
         Contém os métodos de acesso (get, set) necessários */
 
     @Id
+    //@Column(name = "livro_id")
     @SequenceGenerator(name = "seq", sequenceName = "seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
     private int ID;

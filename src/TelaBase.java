@@ -2,8 +2,9 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.util.List;
 
-public abstract class TelaBase extends javax.swing.JFrame {
+public abstract class TelaBase extends javax.swing.JFrame implements CadastroListener {
 
     /* Classe que define uma tela básica para pesquisa e cadastro */
 
@@ -33,9 +34,6 @@ public abstract class TelaBase extends javax.swing.JFrame {
     protected JTable tblResultados;
     protected DefaultTableModel tableModel;
     protected int IDSelecionado;
-
-    //Cria um objeto estático e público de uma base de dados para uso em outras áreas do sistema
-    public static LivroBaseDeDados baseDeDados  = new LivroBaseDeDados();
 
     public TelaBase(String title) {
         setTitle(title);
@@ -161,6 +159,16 @@ public abstract class TelaBase extends javax.swing.JFrame {
         txtFieldCampo4.setText("");
         txtFieldCampo5.setText("");
         radioBtn.setSelected(false);
+    }
+
+    @Override
+    public void atualizaDados() {
+        limparCampos();
+    }
+
+    @Override
+    public void mostrarMensagemDeErro(String mensagem) {
+        JOptionPane.showMessageDialog(this, mensagem, "Erro", JOptionPane.ERROR_MESSAGE);
     }
 }
 

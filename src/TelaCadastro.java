@@ -36,6 +36,7 @@ public class TelaCadastro extends TelaBase implements CadastroListener {
             public void actionPerformed(ActionEvent e) {
                 CadastrarUsuario = false;
                 prepararCamposCadastro();
+                limparCampos();
             }
         });
 
@@ -44,6 +45,7 @@ public class TelaCadastro extends TelaBase implements CadastroListener {
             public void actionPerformed(ActionEvent e) {
                 CadastrarUsuario = true;
                 prepararCamposCadastro();
+                limparCampos();
             }
         });
 
@@ -184,10 +186,5 @@ public class TelaCadastro extends TelaBase implements CadastroListener {
         }
         tableModel.fireTableDataChanged();
         limparCampos();
-    }
-
-    @Override
-    public void mostrarMensagemDeErro(String mensagem) {
-        JOptionPane.showMessageDialog(this, mensagem, "Erro", JOptionPane.ERROR_MESSAGE);
     }
 }

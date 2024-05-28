@@ -1,8 +1,10 @@
+import java.util.List;
+
 public class UsuarioController {
-    private final TelaCadastro usuarioView;
+    private final TelaBase usuarioView;
     private final UsuarioDAO usuarioDAO;
 
-    public UsuarioController(TelaCadastro usuarioView, UsuarioDAO usuarioDAO) {
+    public UsuarioController(TelaBase usuarioView, UsuarioDAO usuarioDAO) {
         this.usuarioView = usuarioView;
         this.usuarioDAO = usuarioDAO;
     }
@@ -20,6 +22,10 @@ public class UsuarioController {
         }else{
             usuarioDAO.inserirUsuario(nome, senha, cpf, rg, email, isAdmin);
         }
+    }
+
+    public Usuario buscarUsuarioPorID(int usuarioID){
+        return  usuarioDAO.buscaUsuarioPorID(usuarioID);
     }
 
     public void buscarUsuario(Object[] dados){

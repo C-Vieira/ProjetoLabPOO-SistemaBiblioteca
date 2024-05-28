@@ -8,6 +8,7 @@ public class Usuario {
         Contém os métodos de acesso (get, set) necessários */
 
     @Id
+    //@Column(name = "user_id")
     @SequenceGenerator(name = "seq2", sequenceName = "seq2", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq2")
     private int ID;

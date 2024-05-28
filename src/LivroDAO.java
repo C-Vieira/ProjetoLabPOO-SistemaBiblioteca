@@ -16,9 +16,9 @@ public class LivroDAO {
         }
     }
 
-    private void notificarErro(){
+    private void notificarErro(String message){
         for (CadastroListener livroListener : livroListeners) {
-            livroListener.mostrarMensagemDeErro("Livro não encontrado...");
+            livroListener.mostrarMensagemDeErro(message);
         }
     }
 
@@ -41,6 +41,23 @@ public class LivroDAO {
         }
     }
 
+    public Livro buscaLivroPorID(int livroID){
+        List<Livro> result = new ArrayList<>();
+        try {
+            result = DatabaseManager.getDatabaseSessionFactory().fromTransaction(session -> {
+                SelectionQuery<Livro> query = session.createSelectionQuery("from Livro where id = :livroID", Livro.class);
+                query.setParameter("livroID", livroID);
+                if (query.getResultList().isEmpty()) {
+                    notificarErro("Livro não encontrado...");
+                }
+                return query.getResultList();
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result.getFirst();
+    }
+
     public void buscarLivroPorTitulo(String livroTitulo) {
         List<Livro> result = new ArrayList<>();
         try {
@@ -48,7 +65,7 @@ public class LivroDAO {
                 SelectionQuery<Livro> query = session.createSelectionQuery("from Livro where titulo = :livroTitulo", Livro.class);
                 query.setParameter("livroTitulo", livroTitulo);
                 if (query.getResultList().isEmpty()) {
-                    notificarErro();
+                    notificarErro("Livro não encontrado...");
                     return getLivros();
                 }
                 return query.getResultList();
@@ -66,7 +83,7 @@ public class LivroDAO {
                 SelectionQuery<Livro> query = session.createSelectionQuery("from Livro where categoria = :livroCategoria", Livro.class);
                 query.setParameter("livroCategoria", livroCategoria);
                 if (query.getResultList().isEmpty()) {
-                    notificarErro();
+                    notificarErro("Livro não encontrado...");
                     return getLivros();
                 }
                 return query.getResultList();
@@ -84,7 +101,7 @@ public class LivroDAO {
                 SelectionQuery<Livro> query = session.createSelectionQuery("from Livro where autor = :livroAutor", Livro.class);
                 query.setParameter("livroAutor", livroAutor);
                 if (query.getResultList().isEmpty()) {
-                    notificarErro();
+                    notificarErro("Livro não encontrado...");
                     return getLivros();
                 }
                 return query.getResultList();
@@ -102,7 +119,7 @@ public class LivroDAO {
                 SelectionQuery<Livro> query = session.createSelectionQuery("from Livro where ISBN = :livroISBN", Livro.class);
                 query.setParameter("livroISBN", livroISBN);
                 if (query.getResultList().isEmpty()) {
-                    notificarErro();
+                    notificarErro("Livro não encontrado...");
                     return getLivros();
                 }
                 return query.getResultList();

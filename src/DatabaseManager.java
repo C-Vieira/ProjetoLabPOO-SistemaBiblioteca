@@ -21,6 +21,7 @@ public class DatabaseManager {
             sessionFactory = new MetadataSources(registry)
                     .addAnnotatedClass(Livro.class)
                     .addAnnotatedClass(Usuario.class)
+                    .addAnnotatedClass(Emprestimo.class)
                     .buildMetadata()
                     .buildSessionFactory();
 

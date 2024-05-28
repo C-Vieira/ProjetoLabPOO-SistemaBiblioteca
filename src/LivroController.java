@@ -1,8 +1,10 @@
+import java.util.List;
+
 public class LivroController {
-    private final TelaCadastro livroView;
+    private final TelaBase livroView;
     private final LivroDAO livroDAO;
 
-    public LivroController(TelaCadastro livroView, LivroDAO livroDAO) {
+    public LivroController(TelaBase livroView, LivroDAO livroDAO) {
         this.livroView = livroView;
         this.livroDAO = livroDAO;
     }
@@ -20,6 +22,10 @@ public class LivroController {
         }else{
             livroDAO.inserirLivro(titulo, categoria, autor, ISBN, prazo, disponivel);
         }
+    }
+
+    public Livro buscarLivroPorID(int livroID){
+        return  livroDAO.buscaLivroPorID(livroID);
     }
 
     public void buscarLivro(Object[] dados){

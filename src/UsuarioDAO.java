@@ -16,9 +16,9 @@ public class UsuarioDAO {
         }
     }
 
-    private void notificarErro(){
+    private void notificarErro(String message){
         for (CadastroListener usuarioListener : usuarioListeners) {
-            usuarioListener.mostrarMensagemDeErro("Usuário não encontrado...");
+            usuarioListener.mostrarMensagemDeErro(message);
         }
     }
 
@@ -41,6 +41,23 @@ public class UsuarioDAO {
         }
     }
 
+    public Usuario buscaUsuarioPorID(int usuarioID){
+        List<Usuario> result = new ArrayList<>();
+        try {
+            result = DatabaseManager.getDatabaseSessionFactory().fromTransaction(session -> {
+                SelectionQuery<Usuario> query = session.createSelectionQuery("from Usuario where id = :usuarioID", Usuario.class);
+                query.setParameter("usuarioID", usuarioID);
+                if (query.getResultList().isEmpty()) {
+                    notificarErro("Usuário não encontrado...");
+                }
+                return query.getResultList();
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result.getFirst();
+    }
+
     public void buscarUsuarioPorNome(String nomeUsuario) {
         List<Usuario> result = new ArrayList<>();
         try {
@@ -48,7 +65,7 @@ public class UsuarioDAO {
                 SelectionQuery<Usuario> query = session.createSelectionQuery("from Usuario where nome = :nomeUsuario", Usuario.class);
                 query.setParameter("nomeUsuario", nomeUsuario);
                 if (query.getResultList().isEmpty()) {
-                    notificarErro();
+                    notificarErro("Usuário não encontrado...");
                     return getUsuarios();
                 }
                 return query.getResultList();
@@ -66,7 +83,7 @@ public class UsuarioDAO {
                 SelectionQuery<Usuario> query = session.createSelectionQuery("from Usuario where email = :emailUsuario", Usuario.class);
                 query.setParameter("emailUsuario", emailUsuario);
                 if (query.getResultList().isEmpty()) {
-                    notificarErro();
+                    notificarErro("Usuário não encontrado...");
                     return getUsuarios();
                 }
                 return query.getResultList();
@@ -84,7 +101,7 @@ public class UsuarioDAO {
                 SelectionQuery<Usuario> query = session.createSelectionQuery("from Usuario where CPF = :cpfUsuario", Usuario.class);
                 query.setParameter("cpfUsuario", cpfUsuario);
                 if (query.getResultList().isEmpty()) {
-                    notificarErro();
+                    notificarErro("Usuário não encontrado...");
                     return getUsuarios();
                 }
                 return query.getResultList();
@@ -102,7 +119,7 @@ public class UsuarioDAO {
                 SelectionQuery<Usuario> query = session.createSelectionQuery("from Usuario where RG = :rgUsuario", Usuario.class);
                 query.setParameter("rgUsuario", rgUsuario);
                 if (query.getResultList().isEmpty()) {
-                    notificarErro();
+                    notificarErro("Usuário não encontrado...");
                     return getUsuarios();
                 }
                 return query.getResultList();
