@@ -4,7 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UsuarioDAO {
+    private static Usuario usuarioAtual;
     private final List<CadastroListener> usuarioListeners = new ArrayList<>();
+
+    public static Usuario getUsuarioAtual() {
+        return usuarioAtual;
+    }
+
+    public void setUsuarioAtual(Usuario usuario) {
+        usuarioAtual = usuario;
+    }
 
     public void subscribe(CadastroListener usuarioListener) {
         usuarioListeners.add(usuarioListener);
@@ -26,6 +35,11 @@ public class UsuarioDAO {
         for (CadastroListener usuarioListener : usuarioListeners) {
             usuarioListener.mostrarResultados(usuarios);
         }
+    }
+
+    public boolean verificaSenha(Usuario usuario, String senha){
+        if (usuario.getSenha().equals(senha)) return true;
+        else return false;
     }
 
     public void inserirUsuario(String nome, String senha, String CPF, String RG, String email, boolean isAdmin) {

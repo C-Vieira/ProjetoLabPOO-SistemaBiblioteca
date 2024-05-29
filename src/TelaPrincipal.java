@@ -12,9 +12,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private JPanel pnlPrincipal;
     private JLabel lblTitulo;
     private JButton btnPesquisa;
-    private JButton btnCadastroLivro;
-    //private JButton btnDevolucao;
-    //private JButton btnCadastroUsuario;
+    private JButton btnCadastros;
 
     public TelaPrincipal() {
         setTitle("Tela Principal");
@@ -27,9 +25,10 @@ public class TelaPrincipal extends javax.swing.JFrame {
         pnlPrincipal.setLayout(new FlowLayout());
 
         pnlTitulo = new JPanel();
-        pnlTitulo.setLayout(new FlowLayout());
+        pnlTitulo.setLayout(new CardLayout());
 
-        lblTitulo = new JLabel("Sistema Gerenciador de Livros");
+        ImageIcon icon = new ImageIcon("imagens/biblioteca_icon.png");
+        lblTitulo = new JLabel("     Sistema Gerenciador de Livros");
         pnlTitulo.add(lblTitulo);
 
         btnPesquisa = new JButton("Empréstimos");
@@ -41,16 +40,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
             }
         });
 
-        /*btnDevolucao = new JButton("Realizar Devolução");
-        btnDevolucao.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("Abrindo Tela de Devolver"); //Cria uma nova tela de devolução
-            }
-        });*/
-
-        btnCadastroLivro = new JButton("Cadastros");
-        btnCadastroLivro.addActionListener(new ActionListener() {
+        btnCadastros = new JButton("Cadastros");
+        btnCadastros.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 TelaCadastro cadastro = new TelaCadastro(); //Cria uma nova tela de cadastro (acesso restrito para administradores)
@@ -58,23 +49,15 @@ public class TelaPrincipal extends javax.swing.JFrame {
             }
         });
 
-        /*btnCadastroUsuario = new JButton("Cadastrar Usuário");
-        btnCadastroUsuario.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                TelaCadastroUsuario cadastroUsuario = new TelaCadastroUsuario(); //Cria uma nova tela de cadastro (acesso restrito para administradores)
-                cadastroUsuario.setVisible(true);
-            }
-        });*/
-
         pnlPrincipal.add(btnPesquisa);
-        pnlPrincipal.add(btnCadastroLivro);
+        pnlPrincipal.add(btnCadastros);
 
         add(pnlTitulo, BorderLayout.NORTH);
-        add(pnlPrincipal, BorderLayout.CENTER);
+        add(new JLabel(icon), BorderLayout.CENTER);
+        add(pnlPrincipal, BorderLayout.SOUTH);
 
-        //if (!UsuarioBaseDeDados.getUsuarioAtual().equals("admin"))
-            //btnCadastro.setEnabled(false);
+        if (!UsuarioDAO.getUsuarioAtual().isAdmin())
+            btnCadastros.setEnabled(false);
 
         pack();
     }

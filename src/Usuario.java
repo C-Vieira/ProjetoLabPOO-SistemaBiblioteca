@@ -99,8 +99,4 @@ public class Usuario {
     public String getNomeUsuario() {
         return this.nome;
     }
-
-    public boolean VerificaSenha(String senha){
-        return this.senha.equals(senha);
-    }
 }

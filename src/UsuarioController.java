@@ -1,12 +1,37 @@
+import javax.swing.*;
 import java.util.List;
 
 public class UsuarioController {
-    private final TelaBase usuarioView;
+    private TelaBase usuarioView;
+    private TelaLogin loginView;
     private final UsuarioDAO usuarioDAO;
 
     public UsuarioController(TelaBase usuarioView, UsuarioDAO usuarioDAO) {
         this.usuarioView = usuarioView;
         this.usuarioDAO = usuarioDAO;
+    }
+
+    public UsuarioController(TelaLogin loginView, UsuarioDAO usuarioDAO) {
+        this.loginView = loginView;
+        this.usuarioDAO = usuarioDAO;
+    }
+
+    public boolean login(String usuarioId, String nomeUsuario, String senha) {
+        try {
+            Usuario usuario = usuarioDAO.buscaUsuarioPorID(Integer.parseInt(usuarioId));
+            if(usuario != null && nomeUsuario != null && usuarioDAO.verificaSenha(usuario, senha)){
+                System.out.println("Usuário Autenticado");
+                usuarioDAO.setUsuarioAtual(usuario);
+                return true;
+            }else {
+                System.out.println("Usuário Inválido");
+                JOptionPane.showMessageDialog(usuarioView, "Usuário Inválido", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        }catch (Exception e) {
+            System.out.println("Usuário Inválido");
+            JOptionPane.showMessageDialog(usuarioView, "Usuário Inválido", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+        return false;
     }
 
     public void adicionaUsuario(Object[] dados){

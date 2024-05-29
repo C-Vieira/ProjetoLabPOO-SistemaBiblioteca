@@ -176,7 +176,7 @@ public class TelaCadastro extends TelaBase implements CadastroListener {
         if (CadastrarUsuario) {
             for (Usuario usuario : (List<Usuario>)resultado) {
                 tableModel.addRow(new Object[]{usuario.getID(), usuario.getNome(), usuario.getSenha(),
-                        usuario.getCPF(), usuario.getRG(), usuario.getRG(), usuario.isAdmin()});
+                        usuario.getCPF(), usuario.getRG(), usuario.getEmail(), usuario.isAdmin()});
             }
         }else {
             for (Livro livro : (List<Livro>) resultado) {

@@ -41,7 +41,7 @@ public class TelaPesquisa extends TelaBase implements EmprestimoListener {
 
         prepararCamposCadastro();
 
-        /*//Botões para testes
+        //Botões para testes
         //Botão Excluir de Teste
         JButton btnHeader3 = new JButton("Excluir");
         btnHeader3.addActionListener(new ActionListener() {
@@ -59,7 +59,7 @@ public class TelaPesquisa extends TelaBase implements EmprestimoListener {
             }
         });
         panelHeader.add(btnHeader4);
-        //Remover aqui!*/
+        //Remover aqui!
 
         btnHeader1.setText("Selecionar Livro");
         btnHeader1.addActionListener(new ActionListener() {
@@ -149,7 +149,8 @@ public class TelaPesquisa extends TelaBase implements EmprestimoListener {
 
         //Atualização dos campos
         IDSelecionado = id;
-        if(pesquisarPorUsuario) IDUsuarioSelecionado = id;
+        if(mostrarEmprestimos) limparIDSelecao();
+        else if(pesquisarPorUsuario) IDUsuarioSelecionado = id;
         else IDLivroSelecionado = id;
         txtFieldCampo1.setText(campo1);
         txtFieldCampo2.setText(campo2);
@@ -258,6 +259,10 @@ public class TelaPesquisa extends TelaBase implements EmprestimoListener {
         prepararCamposCadastro();
         limparCampos();
 
+        System.out.println("IDSelecionado: "+IDSelecionado+
+                "\nIDLivroSelecionado: "+IDLivroSelecionado+
+                "\nIDUsuarioSelecionado: "+IDUsuarioSelecionado);
+
         if(IDLivroSelecionado != -1) {
             txtFieldCampo1.setText(livroController.buscarLivroPorID(IDLivroSelecionado).getTitulo());
         }
@@ -306,23 +311,22 @@ public class TelaPesquisa extends TelaBase implements EmprestimoListener {
         dados[4] = txtFieldCampo5.getText();
         dados[5] = radioBtn.isSelected();
 
-        System.out.println("IDSelecionado: "+IDSelecionado+
-                "\nIDLivroSelecionado: "+IDLivroSelecionado+
-                "\nIDUsuarioSelecionado: "+IDUsuarioSelecionado);
-
-        IDLivroSelecionado = -1;
-        IDUsuarioSelecionado = -1;
+        limparIDSelecao();
 
         emprestimoController.adicionaEmprestimo(dados);
     }
 
     private void devolver(){
-        IDLivroSelecionado = -1;
-        IDUsuarioSelecionado = -1;
+        limparIDSelecao();
         atualizaBotaoEmprestimo();
         limparCampos();
 
         emprestimoController.editarEmprestimo(IDSelecionado);
+    }
+
+    private void limparIDSelecao(){
+        IDLivroSelecionado = -1;
+        IDUsuarioSelecionado = -1;
     }
 
     @Override
@@ -337,7 +341,7 @@ public class TelaPesquisa extends TelaBase implements EmprestimoListener {
         if (pesquisarPorUsuario) {
             for (Usuario usuario : (List<Usuario>)resultado) {
                 tableModel.addRow(new Object[]{usuario.getID(), usuario.getNome(), usuario.getSenha(),
-                        usuario.getCPF(), usuario.getRG(), usuario.getRG(), usuario.isAdmin()});
+                        usuario.getCPF(), usuario.getRG(), usuario.getEmail(), usuario.isAdmin()});
             }
         }else {
             for (Livro livro : (List<Livro>) resultado) {
