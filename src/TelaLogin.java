@@ -3,7 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class TelaLogin extends JFrame {
+public class TelaLogin extends JFrame implements BaseView {
     private JLabel lblUsuarioID;
     private JLabel lblUsuario;
     private JLabel lblSenha;
@@ -12,18 +12,18 @@ public class TelaLogin extends JFrame {
     private JPasswordField passFieldSenha;
     private JButton btnLogin;
 
-    private final UsuarioDAO usuarioDAO;
+    //private final UsuarioDAO usuarioDAO;
     private final UsuarioController usuarioController;
 
-    public TelaLogin() {
+    public TelaLogin(UsuarioController usuarioController) {
         setTitle("Login");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setSize(500, 250);
         setLayout(new GridLayout(4, 2));
 
-        usuarioDAO = new UsuarioDAO();
-        usuarioController = new UsuarioController(this, usuarioDAO);
+        this.usuarioController = usuarioController;
+        usuarioController.setView(this);
 
         lblUsuarioID = new JLabel("ID:");
         lblUsuario = new JLabel("Usuario:");
@@ -56,11 +56,20 @@ public class TelaLogin extends JFrame {
         String senha = passFieldSenha.getText();
 
         if(usuarioController.login(usuarioId, nomeUsuario, senha)) {
-            TelaPrincipal main = new TelaPrincipal();
-            main.setVisible(true);
+            ServiceLocator.getInstance().getTelaPrincipal().open();
         }
         txtFieldUsuarioID.setText("");
         txtFieldUsuario.setText("");
         passFieldSenha.setText("");
+    }
+
+    @Override
+    public void open() {
+        this.setVisible(true);
+    }
+
+    @Override
+    public void mostrarMensagemDeErro(String mensagem) {
+        JOptionPane.showMessageDialog(this, mensagem, "Erro", JOptionPane.ERROR_MESSAGE);
     }
 }

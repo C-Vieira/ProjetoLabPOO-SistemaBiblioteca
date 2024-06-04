@@ -3,7 +3,7 @@ import org.hibernate.query.SelectionQuery;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UsuarioDAO {
+public class UsuarioDAO implements UsuarioDataBase, CadastroPublisher {
     private static Usuario usuarioAtual;
     private final List<CadastroListener> usuarioListeners = new ArrayList<>();
 
@@ -11,12 +11,19 @@ public class UsuarioDAO {
         return usuarioAtual;
     }
 
+    @Override
     public void setUsuarioAtual(Usuario usuario) {
         usuarioAtual = usuario;
     }
 
+    @Override
     public void subscribe(CadastroListener usuarioListener) {
         usuarioListeners.add(usuarioListener);
+    }
+
+    @Override
+    public void unsubscribe(CadastroListener listener) {
+        usuarioListeners.remove(listener);
     }
 
     private void notificarUsuarios() {
@@ -37,11 +44,13 @@ public class UsuarioDAO {
         }
     }
 
+    @Override
     public boolean verificaSenha(Usuario usuario, String senha){
         if (usuario.getSenha().equals(senha)) return true;
         else return false;
     }
 
+    @Override
     public void inserirUsuario(String nome, String senha, String CPF, String RG, String email, boolean isAdmin) {
         try {
             DatabaseManager.getDatabaseSessionFactory().inTransaction(session -> {
@@ -55,6 +64,7 @@ public class UsuarioDAO {
         }
     }
 
+    @Override
     public Usuario buscaUsuarioPorID(int usuarioID){
         List<Usuario> result = new ArrayList<>();
         try {
@@ -72,6 +82,7 @@ public class UsuarioDAO {
         return result.getFirst();
     }
 
+    @Override
     public void buscarUsuarioPorNome(String nomeUsuario) {
         List<Usuario> result = new ArrayList<>();
         try {
@@ -90,6 +101,7 @@ public class UsuarioDAO {
         }
     }
 
+    @Override
     public void buscarUsuarioPorEmail(String emailUsuario) {
         List<Usuario> result = new ArrayList<>();
         try {
@@ -108,6 +120,7 @@ public class UsuarioDAO {
         }
     }
 
+    @Override
     public void buscarUsuarioPorCPF(String cpfUsuario) {
         List<Usuario> result = new ArrayList<>();
         try {
@@ -126,6 +139,7 @@ public class UsuarioDAO {
         }
     }
 
+    @Override
     public void buscarUsuarioPorRG(String rgUsuario) {
         List<Usuario> result = new ArrayList<>();
         try {
@@ -144,6 +158,7 @@ public class UsuarioDAO {
         }
     }
 
+    @Override
     public void editarUsuario(int usuarioID, String nome, String senha, String cpf, String rg, String email, boolean isAdmin) {
         try {
             DatabaseManager.getDatabaseSessionFactory().inTransaction(session -> {
@@ -163,6 +178,7 @@ public class UsuarioDAO {
         }
     }
 
+    @Override
     public void excluirUsuario(int usuarioID) {
         try {
             DatabaseManager.getDatabaseSessionFactory().inTransaction(session -> {
@@ -178,6 +194,7 @@ public class UsuarioDAO {
         }
     }
 
+    @Override
     public List<Usuario> getUsuarios() {
         List<Usuario> result = new ArrayList<>();
         try {

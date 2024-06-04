@@ -3,11 +3,17 @@ import org.hibernate.query.SelectionQuery;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LivroDAO {
+public class LivroDAO implements LivroDataBase, CadastroPublisher {
     private final List<CadastroListener> livroListeners = new ArrayList<>();
 
+    @Override
     public void subscribe(CadastroListener livroListener) {
         livroListeners.add(livroListener);
+    }
+
+    @Override
+    public void unsubscribe(CadastroListener listener) {
+        livroListeners.remove(listener);
     }
 
     private void notificarLivros() {
@@ -28,6 +34,7 @@ public class LivroDAO {
         }
     }
 
+    @Override
     public void inserirLivro(String titulo, String categoria, String autor, String ISBN, String prazoDeEntrega, boolean disponivel) {
         try {
             DatabaseManager.getDatabaseSessionFactory().inTransaction(session -> {
@@ -41,6 +48,7 @@ public class LivroDAO {
         }
     }
 
+    @Override
     public Livro buscaLivroPorID(int livroID){
         List<Livro> result = new ArrayList<>();
         try {
@@ -58,6 +66,7 @@ public class LivroDAO {
         return result.getFirst();
     }
 
+    @Override
     public void buscarLivroPorTitulo(String livroTitulo) {
         List<Livro> result = new ArrayList<>();
         try {
@@ -76,6 +85,7 @@ public class LivroDAO {
         }
     }
 
+    @Override
     public void buscarLivroPorCategoria(String livroCategoria) {
         List<Livro> result = new ArrayList<>();
         try {
@@ -94,6 +104,7 @@ public class LivroDAO {
         }
     }
 
+    @Override
     public void buscarLivroPorAutor(String livroAutor) {
         List<Livro> result = new ArrayList<>();
         try {
@@ -112,6 +123,7 @@ public class LivroDAO {
         }
     }
 
+    @Override
     public void buscarLivroPorISBN(String livroISBN) {
         List<Livro> result = new ArrayList<>();
         try {
@@ -130,6 +142,7 @@ public class LivroDAO {
         }
     }
 
+    @Override
     public void editarLivro(int livroID, String titulo, String categoria, String autor, String isbn, String prazo, boolean disponibilidade) {
         try {
             DatabaseManager.getDatabaseSessionFactory().inTransaction(session -> {
@@ -149,6 +162,7 @@ public class LivroDAO {
         }
     }
 
+    @Override
     public void excluirLivro(int livroID) {
         try {
             DatabaseManager.getDatabaseSessionFactory().inTransaction(session -> {
@@ -164,6 +178,7 @@ public class LivroDAO {
         }
     }
 
+    @Override
     public List<Livro> getLivros() {
         List<Livro> result = new ArrayList<>();
         try {

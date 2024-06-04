@@ -7,8 +7,7 @@ public class Main {
         DatabaseManager.createSessionFactory();
 
         SwingUtilities.invokeLater(() -> {
-            TelaLogin login = new TelaLogin();
-            login.setVisible(true);
+            ServiceLocator.getInstance().getTelaLogin().open();
 
             //TelaPrincipal main = new TelaPrincipal();
             //main.setVisible(true);

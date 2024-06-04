@@ -2,10 +2,11 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 public class TelaPesquisa extends TelaBase implements EmprestimoListener {
@@ -13,31 +14,34 @@ public class TelaPesquisa extends TelaBase implements EmprestimoListener {
     /* Classe que define uma tela de pesquisa contendo todos os campos para acomodar os dados de um livro
        Possui um botão para pesquisa e uma tabela para mostragem de resultados */
 
-    private final LivroDAO livroDAO;
+    private CadastroPublisher livroPublisher, usuarioPublisher;
     private final LivroController livroController;
-    private final UsuarioDAO usuarioDAO;
     private final UsuarioController usuarioController;
-    private final EmprestimoDAO emprestimoDAO;
+    private EmprestimoPublisher emprestimoPublisher;
     private final EmprestimoController emprestimoController;
     private int IDLivroSelecionado = -1;
     private int IDUsuarioSelecionado = -1;
     private boolean pesquisarPorUsuario = false;
     private boolean mostrarEmprestimos = false;
 
-    public TelaPesquisa() {
+    public TelaPesquisa(CadastroPublisher livroPublisher, CadastroPublisher usuarioPublisher, EmprestimoPublisher emprestimoPublisher,
+                        LivroController livroController, UsuarioController usuarioController, EmprestimoController emprestimoController) {
         super("Empréstimos");
 
-        livroDAO = new LivroDAO();
-        livroDAO.subscribe(this);
-        livroController = new LivroController(this, livroDAO);
+        this.livroPublisher = livroPublisher;
+        livroPublisher.subscribe(this);
+        this.livroController = livroController;
+        livroController.setView(this);
 
-        usuarioDAO = new UsuarioDAO();
-        usuarioDAO.subscribe(this);
-        usuarioController = new UsuarioController(this, usuarioDAO);
+        this.usuarioPublisher = usuarioPublisher;
+        usuarioPublisher.subscribe(this);
+        this.usuarioController = usuarioController;
+        usuarioController.setView(this);
 
-        emprestimoDAO = new EmprestimoDAO();
-        emprestimoDAO.subscribe(this);
-        emprestimoController = new EmprestimoController(this, emprestimoDAO);
+        this.emprestimoPublisher = emprestimoPublisher;
+        emprestimoPublisher.subscribe(this);
+        this.emprestimoController = emprestimoController;
+        emprestimoController.setView(this);
 
         prepararCamposCadastro();
 
@@ -126,6 +130,13 @@ public class TelaPesquisa extends TelaBase implements EmprestimoListener {
         tableModel.setColumnIdentifiers(tituloColunas);
 
         recarregarTabela();
+
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                desconectar();
+            }
+        });
     }
 
     /* Override do método para seleção de TelaBase para que possamos distinguir os ids... */
@@ -220,20 +231,20 @@ public class TelaPesquisa extends TelaBase implements EmprestimoListener {
         //Atualização da visualização da tabela
         tableModel.setRowCount(0);
         if (pesquisarPorUsuario) {
-            List<Usuario> usuarios = usuarioDAO.getUsuarios();
+            List<Usuario> usuarios = usuarioController.getUsuarios();
             for (Usuario usuario : usuarios) {
                 tableModel.addRow(new Object[]{usuario.getID(), usuario.getNome(), usuario.getSenha(),
                         usuario.getCPF(), usuario.getRG(), usuario.getEmail(), usuario.isAdmin()});
             }
         }else if(mostrarEmprestimos){
-            List<Emprestimo> emprestimos = emprestimoDAO.getEmprestimos();
+            List<Emprestimo> emprestimos = emprestimoController.getEmprestimos();
             for (Emprestimo emprestimo : emprestimos) {
                 tableModel.addRow(new Object[]{emprestimo.getID(), emprestimo.getLivro().getTitulo(), emprestimo.getUsuario().getNome(),
                         emprestimo.getDataEmprestimo(), emprestimo.getDataPrevistaDevolucao(),
                         emprestimo.getDataRealDevolucao(), emprestimo.isDevolvido()});
             }
         }else{
-            List<Livro> livros = livroDAO.getLivros();
+            List<Livro> livros = livroController.getLivros();
             for (Livro livro : livros) {
                 tableModel.addRow(new Object[]{livro.getID(), livro.getTitulo(), livro.getCategoria(),
                         livro.getAutor(), livro.getISBN(), livro.getPrazoDeEntrega(), livro.isDisponivel()});
@@ -344,7 +355,7 @@ public class TelaPesquisa extends TelaBase implements EmprestimoListener {
                         usuario.getCPF(), usuario.getRG(), usuario.getEmail(), usuario.isAdmin()});
             }
         }else {
-            for (Livro livro : (List<Livro>) resultado) {
+            for (Livro livro : (List<Livro>)resultado) {
                 tableModel.addRow(new Object[]{livro.getID(), livro.getTitulo(), livro.getCategoria(),
                         livro.getAutor(), livro.getISBN(), livro.getPrazoDeEntrega(), livro.isDisponivel()});
             }
@@ -357,5 +368,16 @@ public class TelaPesquisa extends TelaBase implements EmprestimoListener {
     public void atualizaDisponibiliade(Livro livro) {
         livroController.editarLivro(livro.getID(), new Object[] { livro.getTitulo(), livro.getCategoria(),
                 livro.getAutor(), livro.getISBN(), livro.getPrazoDeEntrega(), !livro.isDisponivel() });
+    }
+
+    @Override
+    public void open() {
+        this.setVisible(true);
+    }
+
+    private void desconectar(){
+        livroPublisher.unsubscribe(this);
+        usuarioPublisher.unsubscribe(this);
+        emprestimoPublisher.unsubscribe(this);
     }
 }

@@ -1,6 +1,7 @@
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.List;
 
 public class TelaCadastro extends TelaBase implements CadastroListener {
@@ -9,22 +10,23 @@ public class TelaCadastro extends TelaBase implements CadastroListener {
        Possui um botão para pesquisa e uma tabela para mostragem de resultados
        Aceita a seleção de linhas na tabela e preenche os campos com os devidos dados para auxílio nas operações de cadastro */
 
-    private final LivroDAO livroDAO;
+    private CadastroPublisher livroPublisher, usuarioPublisher;
     private final LivroController livroController;
-    private final UsuarioDAO usuarioDAO;
     private final UsuarioController usuarioController;
     private boolean CadastrarUsuario = false;
 
-    public TelaCadastro() {
+    public TelaCadastro(CadastroPublisher livroPublisher, CadastroPublisher usuarioPublisher, LivroController livroController, UsuarioController usuarioController) {
         super("Cadastros");
 
-        livroDAO = new LivroDAO();
-        livroDAO.subscribe(this);
-        livroController = new LivroController(this, livroDAO);
+        this.livroPublisher = livroPublisher;
+        livroPublisher.subscribe(this);
+        this.livroController = livroController;
+        livroController.setView(this);
 
-        usuarioDAO = new UsuarioDAO();
-        usuarioDAO.subscribe(this);
-        usuarioController = new UsuarioController(this, usuarioDAO);
+        this.usuarioPublisher = usuarioPublisher;
+        usuarioPublisher.subscribe(this);
+        this.usuarioController = usuarioController;
+        usuarioController.setView(this);
 
         btnHeader1.setText("Cadastrar Livro");
         btnHeader2.setText("Cadastrar Usuário");
@@ -80,6 +82,13 @@ public class TelaCadastro extends TelaBase implements CadastroListener {
                 excluir();
             }
         });
+
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                desconectar();
+            }
+        });
     }
 
     private void prepararCamposCadastro(){
@@ -118,13 +127,13 @@ public class TelaCadastro extends TelaBase implements CadastroListener {
         //Atualização da visualização da tabela
         tableModel.setRowCount(0);
         if (CadastrarUsuario) {
-            List<Usuario> usuarios = usuarioDAO.getUsuarios();
+            List<Usuario> usuarios = usuarioController.getUsuarios();
             for (Usuario usuario : usuarios) {
                 tableModel.addRow(new Object[]{usuario.getID(), usuario.getNome(), usuario.getSenha(),
                         usuario.getCPF(), usuario.getRG(), usuario.getEmail(), usuario.isAdmin()});
             }
         }else {
-            List<Livro> livros = livroDAO.getLivros();
+            List<Livro> livros = livroController.getLivros();
             for (Livro livro : livros) {
                 tableModel.addRow(new Object[]{livro.getID(), livro.getTitulo(), livro.getCategoria(),
                         livro.getAutor(), livro.getISBN(), livro.getPrazoDeEntrega(), livro.isDisponivel()});
@@ -153,15 +162,17 @@ public class TelaCadastro extends TelaBase implements CadastroListener {
     private void editar(){
         if(CadastrarUsuario){
             usuarioController.editarUsuario(IDSelecionado, coletaDados());
+        }else {
+            livroController.editarLivro(IDSelecionado, coletaDados());
         }
-        livroController.editarLivro(IDSelecionado, coletaDados());
     }
 
     private void excluir(){
         if(CadastrarUsuario){
             usuarioController.excluirUsuario(IDSelecionado, coletaDados());
+        }else {
+            livroController.excluirLivro(IDSelecionado);
         }
-        livroController.excluirLivro(IDSelecionado, coletaDados());
     }
 
     @Override
@@ -186,5 +197,15 @@ public class TelaCadastro extends TelaBase implements CadastroListener {
         }
         tableModel.fireTableDataChanged();
         limparCampos();
+    }
+
+    @Override
+    public void open() {
+        this.setVisible(true);
+    }
+
+    private void desconectar(){
+        livroPublisher.unsubscribe(this);
+        usuarioPublisher.unsubscribe(this);
     }
 }

@@ -4,7 +4,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
 
-public abstract class TelaBase extends javax.swing.JFrame implements CadastroListener {
+public abstract class TelaBase extends javax.swing.JFrame implements BaseView, CadastroListener {
 
     /* Classe que define uma tela básica para pesquisa e cadastro */
 
@@ -37,7 +37,7 @@ public abstract class TelaBase extends javax.swing.JFrame implements CadastroLis
 
     public TelaBase(String title) {
         setTitle(title);
-        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setSize(1000, 400);
         setLayout(new BorderLayout());
@@ -169,6 +169,7 @@ public abstract class TelaBase extends javax.swing.JFrame implements CadastroLis
     @Override
     public void mostrarMensagemDeErro(String mensagem) {
         JOptionPane.showMessageDialog(this, mensagem, "Erro", JOptionPane.ERROR_MESSAGE);
+        atualizaDados();
     }
 }
 

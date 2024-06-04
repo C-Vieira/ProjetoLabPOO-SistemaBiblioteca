@@ -1,101 +1,12 @@
-import javax.swing.*;
 import java.util.List;
 
-public class UsuarioController {
-    private TelaBase usuarioView;
-    private TelaLogin loginView;
-    private final UsuarioDAO usuarioDAO;
-
-    public UsuarioController(TelaBase usuarioView, UsuarioDAO usuarioDAO) {
-        this.usuarioView = usuarioView;
-        this.usuarioDAO = usuarioDAO;
-    }
-
-    public UsuarioController(TelaLogin loginView, UsuarioDAO usuarioDAO) {
-        this.loginView = loginView;
-        this.usuarioDAO = usuarioDAO;
-    }
-
-    public boolean login(String usuarioId, String nomeUsuario, String senha) {
-        try {
-            Usuario usuario = usuarioDAO.buscaUsuarioPorID(Integer.parseInt(usuarioId));
-            if(usuario != null && nomeUsuario != null && usuarioDAO.verificaSenha(usuario, senha)){
-                System.out.println("Usuário Autenticado");
-                usuarioDAO.setUsuarioAtual(usuario);
-                return true;
-            }else {
-                System.out.println("Usuário Inválido");
-                JOptionPane.showMessageDialog(usuarioView, "Usuário Inválido", "Erro", JOptionPane.ERROR_MESSAGE);
-            }
-        }catch (Exception e) {
-            System.out.println("Usuário Inválido");
-            JOptionPane.showMessageDialog(usuarioView, "Usuário Inválido", "Erro", JOptionPane.ERROR_MESSAGE);
-        }
-        return false;
-    }
-
-    public void adicionaUsuario(Object[] dados){
-        String nome = dados[0].toString();
-        String senha = dados[1].toString();
-        String cpf = dados[2].toString();
-        String rg = dados[3].toString();
-        String email = dados[4].toString();
-        Boolean isAdmin = Boolean.parseBoolean(dados[5].toString());
-
-        if(nome.isEmpty() || senha.isEmpty() || cpf.isEmpty() || rg.isEmpty() || email.isEmpty()) {
-            System.out.println("Erro ao Adicionar Usuário");
-        }else{
-            usuarioDAO.inserirUsuario(nome, senha, cpf, rg, email, isAdmin);
-        }
-    }
-
-    public Usuario buscarUsuarioPorID(int usuarioID){
-        return  usuarioDAO.buscaUsuarioPorID(usuarioID);
-    }
-
-    public void buscarUsuario(Object[] dados){
-        String nome = dados[0].toString();
-        String email = dados[4].toString();
-        String cpf = dados[2].toString();
-        String rg = dados[3].toString();
-
-        //Se o campo estiver preenchido, pesquisamos por este dado, se não, tentamos o próximo
-        if(!nome.isEmpty()) {
-            usuarioDAO.buscarUsuarioPorNome(nome);
-        } else if (!email.isEmpty()) {
-            usuarioDAO.buscarUsuarioPorEmail(email);
-        } else if (!cpf.isEmpty()) {
-            usuarioDAO.buscarUsuarioPorCPF(cpf);
-        } else if (!rg.isEmpty()) {
-            usuarioDAO.buscarUsuarioPorRG(rg);
-        }else{
-            usuarioView.mostrarMensagemDeErro("Usuário não encontrado...");
-            usuarioView.atualizaDados();
-            System.out.println("Usuário não encontrado");
-        }
-    }
-
-    public void editarUsuario(int usuarioID, Object[] dados){
-        String nome = dados[0].toString();
-        String senha = dados[1].toString();
-        String cpf = dados[2].toString();
-        String rg = dados[3].toString();
-        String email = dados[4].toString();
-        Boolean isAdmin = Boolean.parseBoolean(dados[5].toString());
-
-        if(nome.isEmpty() || senha.isEmpty() || cpf.isEmpty() || rg.isEmpty() || email.isEmpty()) {
-            System.out.println("Erro ao Editar Usuário");
-        }
-        usuarioDAO.editarUsuario(usuarioID, nome, senha, cpf, rg, email, isAdmin); //Atualiza informações de um certo livro por ID
-
-    }
-
-    public void excluirUsuario(int usuarioID, Object[] dados){
-        if(usuarioID > -1) {
-            usuarioDAO.excluirUsuario(usuarioID);
-        }else{
-            System.out.println("Usuário não encontrado");
-        }
-    }
+public interface UsuarioController {
+    void setView(BaseView view);
+    void adicionaUsuario(Object[] dados);
+    Usuario buscarUsuarioPorID(int usuarioID);
+    void buscarUsuario(Object[] dados);
+    void editarUsuario(int usuarioID, Object[] dados);
+    void excluirUsuario(int usuarioID, Object[] dados);
+    public boolean login(String usuarioId, String nomeUsuario, String senha);
+    List<Usuario> getUsuarios();
 }
-

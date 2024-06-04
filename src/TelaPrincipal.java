@@ -3,7 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class TelaPrincipal extends javax.swing.JFrame {
+public class TelaPrincipal extends javax.swing.JFrame implements BaseView {
 
     /*  Classe que define uma tela contendo três botões (pesquisa, devolução, cadastro)
         Usada para navegação no sistema */
@@ -35,8 +35,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         btnPesquisa.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                TelaPesquisa pesquisa = new TelaPesquisa(); //Cria uma nova tela de pesquisa
-                pesquisa.setVisible(true);
+                ServiceLocator.getInstance().getTelaPesquisa().open(); //Cria uma nova tela de pesquisa
             }
         });
 
@@ -44,8 +43,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         btnCadastros.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                TelaCadastro cadastro = new TelaCadastro(); //Cria uma nova tela de cadastro (acesso restrito para administradores)
-                cadastro.setVisible(true);
+                ServiceLocator.getInstance().getTelaCadastro().open(); //Cria uma nova tela de cadastro (acesso restrito para administradores)
             }
         });
 
@@ -60,5 +58,15 @@ public class TelaPrincipal extends javax.swing.JFrame {
             btnCadastros.setEnabled(false);
 
         pack();
+    }
+
+    @Override
+    public void open() {
+        this.setVisible(true);
+    }
+
+    @Override
+    public void mostrarMensagemDeErro(String mensagem) {
+        JOptionPane.showMessageDialog(this, mensagem, "Erro", JOptionPane.ERROR_MESSAGE);
     }
 }

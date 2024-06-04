@@ -3,11 +3,17 @@ import org.hibernate.query.SelectionQuery;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EmprestimoDAO {
+public class EmprestimoDAO implements EmprestimoDataBase, EmprestimoPublisher {
     private final List<EmprestimoListener> emprestimoListeners = new ArrayList<>();
 
+    @Override
     public void subscribe(EmprestimoListener emprestimoListener) {
         emprestimoListeners.add(emprestimoListener);
+    }
+
+    @Override
+    public void unsubscribe(EmprestimoListener listener) {
+        emprestimoListeners.remove(listener);
     }
 
     private void notificarEmprestimos() {
@@ -34,6 +40,7 @@ public class EmprestimoDAO {
         }
     }
 
+    @Override
     public void inserirEmprestimo(Livro livro, Usuario usuario, String dtaEmprestimo, String dtaPrevistaDevolucao, String dtaRealDevolucao, boolean devolvido) {
         try {
             DatabaseManager.getDatabaseSessionFactory().inTransaction(session -> {
@@ -49,6 +56,7 @@ public class EmprestimoDAO {
         }
     }
 
+    @Override
     public void editarEmprestimo(int emprestimoID, String dtaRealDevolucao, boolean devolvido) {
         try {
             DatabaseManager.getDatabaseSessionFactory().inTransaction(session -> {
@@ -66,6 +74,7 @@ public class EmprestimoDAO {
         }
     }
 
+    @Override
     public Emprestimo buscarEmprestimoPorID(int emprestimoID) {
         List<Emprestimo> result = new ArrayList<>();
         try {
@@ -84,6 +93,7 @@ public class EmprestimoDAO {
         return result.getFirst();
     }
 
+    @Override
     public void excluirEmprestimo(int emprestimoID) {
         try {
             DatabaseManager.getDatabaseSessionFactory().inTransaction(session -> {
@@ -99,6 +109,7 @@ public class EmprestimoDAO {
         }
     }
 
+    @Override
     public List<Emprestimo> getEmprestimos() {
         List<Emprestimo> result = new ArrayList<>();
         try {
