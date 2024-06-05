@@ -1,15 +1,15 @@
+import di.ServiceLocator;
+
 import javax.swing.*;
 
 public class Main {
     public static void main(String[] args) {
         System.out.println("Hello World!");
 
-        DatabaseManager.createSessionFactory();
-
         SwingUtilities.invokeLater(() -> {
             ServiceLocator.getInstance().getTelaLogin().open();
 
-            //TelaPrincipal main = new TelaPrincipal();
+            //features.cadastro.presentation.TelaPrincipal main = new features.cadastro.presentation.TelaPrincipal();
             //main.setVisible(true);
         });
     }
