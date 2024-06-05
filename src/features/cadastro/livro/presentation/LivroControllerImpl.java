@@ -29,7 +29,7 @@ public class LivroControllerImpl implements LivroController {
         Boolean disponivel = Boolean.parseBoolean(dados[5].toString());
 
         if(titulo.isEmpty() || categoria.isEmpty() || autor.isEmpty() || ISBN.isEmpty() || prazo.isEmpty()) {
-            System.out.println("Erro ao Adicionar features.cadastro.livro.model.Livro");
+            System.out.println("Erro ao Adicionar Livro");
         }else{
             livroDataBase.inserirLivro(titulo, categoria, autor, ISBN, prazo, disponivel);
         }
@@ -57,9 +57,9 @@ public class LivroControllerImpl implements LivroController {
         } else if (!ISBN.isEmpty()) {
             livroDataBase.buscarLivroPorISBN(ISBN);
         }else{
-            livroView.mostrarMensagemDeErro("features.cadastro.livro.model.Livro não encontrado...");
+            livroView.mostrarMensagemDeErro("Livro não encontrado...");
             //livroView.atualizaDados();
-            System.out.println("features.cadastro.livro.model.Livro não encontrado");
+            System.out.println("Livro não encontrado");
         }
     }
 
@@ -73,7 +73,7 @@ public class LivroControllerImpl implements LivroController {
         Boolean disponivel = Boolean.parseBoolean(dados[5].toString());
 
         if(titulo.isEmpty() || categoria.isEmpty() || autor.isEmpty() || ISBN.isEmpty() || prazo.isEmpty()) {
-            System.out.println("Erro ao Editar features.cadastro.livro.model.Livro");
+            System.out.println("Erro ao Editar Livro");
         }
         livroDataBase.editarLivro(livroId, titulo, categoria, autor, ISBN, prazo, disponivel); //Atualiza informações de um certo livro por ID
 
@@ -84,7 +84,7 @@ public class LivroControllerImpl implements LivroController {
         if(livroId > -1) {
             livroDataBase.excluirLivro(livroId);
         }else{
-            System.out.println("features.cadastro.livro.model.Livro não encontrado");
+            System.out.println("Livro não encontrado");
         }
     }
 
