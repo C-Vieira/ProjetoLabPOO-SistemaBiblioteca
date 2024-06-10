@@ -4,13 +4,11 @@ import javax.swing.*;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+
+        /* Ponto de entrada da aplicação */
 
         SwingUtilities.invokeLater(() -> {
             ServiceLocator.getInstance().getTelaLogin().open();
-
-            //features.cadastro.presentation.TelaPrincipal main = new features.cadastro.presentation.TelaPrincipal();
-            //main.setVisible(true);
         });
     }
 }

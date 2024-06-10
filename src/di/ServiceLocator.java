@@ -22,6 +22,8 @@ import features.emprestimo.presentation.EmprestimoControllerImpl;
 
 public class ServiceLocator {
 
+    /* Classe responsável pela criação de dependências e componentes compartilhados entre outras classes */
+
     //Instância para o singleton
     private static ServiceLocator instance;
 

@@ -30,6 +30,7 @@ public class LivroControllerImpl implements LivroController {
 
         if(titulo.isEmpty() || categoria.isEmpty() || autor.isEmpty() || ISBN.isEmpty() || prazo.isEmpty()) {
             System.out.println("Erro ao Adicionar Livro");
+            livroView.mostrarMensagemDeErro("Erro ao Adicionar Livro");
         }else{
             livroDataBase.inserirLivro(titulo, categoria, autor, ISBN, prazo, disponivel);
         }
@@ -58,7 +59,6 @@ public class LivroControllerImpl implements LivroController {
             livroDataBase.buscarLivroPorISBN(ISBN);
         }else{
             livroView.mostrarMensagemDeErro("Livro não encontrado...");
-            //livroView.atualizaDados();
             System.out.println("Livro não encontrado");
         }
     }
@@ -74,6 +74,7 @@ public class LivroControllerImpl implements LivroController {
 
         if(titulo.isEmpty() || categoria.isEmpty() || autor.isEmpty() || ISBN.isEmpty() || prazo.isEmpty()) {
             System.out.println("Erro ao Editar Livro");
+            livroView.mostrarMensagemDeErro("Erro ao Editar Livro");
         }
         livroDataBase.editarLivro(livroId, titulo, categoria, autor, ISBN, prazo, disponivel); //Atualiza informações de um certo livro por ID
 
@@ -85,6 +86,7 @@ public class LivroControllerImpl implements LivroController {
             livroDataBase.excluirLivro(livroId);
         }else{
             System.out.println("Livro não encontrado");
+            livroView.mostrarMensagemDeErro("Livro não encontrado");
         }
     }
 

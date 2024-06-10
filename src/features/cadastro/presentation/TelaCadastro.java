@@ -1,6 +1,5 @@
 package features.cadastro.presentation;
 
-import features.cadastro.datasource.CadastroListener;
 import features.cadastro.datasource.CadastroPublisher;
 import features.cadastro.livro.model.Livro;
 import features.cadastro.livro.presentation.LivroController;
@@ -13,7 +12,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;
 
-public class TelaCadastro extends TelaBase implements CadastroListener {
+public class TelaCadastro extends TelaBase {
 
     /* Classe que define uma tela de cadastro, contém todos os campos necessários para criação de um livro ou usuário
        Possui um botão para pesquisa e uma tabela para mostragem de resultados
@@ -92,6 +91,7 @@ public class TelaCadastro extends TelaBase implements CadastroListener {
             }
         });
 
+        //Evento para desconectar a view, removendo-a da lista de listeners quando fechada
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -100,6 +100,7 @@ public class TelaCadastro extends TelaBase implements CadastroListener {
         });
     }
 
+    //Prepara labels, campos e botões dependendo da operação
     private void prepararCamposCadastro(){
         if(CadastrarUsuario){
             lblCampo1.setText("Nome:");

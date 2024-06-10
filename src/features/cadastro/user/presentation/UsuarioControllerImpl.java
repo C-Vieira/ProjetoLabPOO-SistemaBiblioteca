@@ -14,6 +14,7 @@ public class UsuarioControllerImpl implements UsuarioController {
         this.usuarioDataBase = usuarioDataBase;
     }
 
+    @Override
     public boolean login(String usuarioId, String nomeUsuario, String senha) {
         try {
             Usuario usuario = usuarioDataBase.buscaUsuarioPorID(Integer.parseInt(usuarioId));
@@ -24,12 +25,10 @@ public class UsuarioControllerImpl implements UsuarioController {
             }else {
                 System.out.println("Usuário Inválido");
                 usuarioView.mostrarMensagemDeErro("Usuário Inválido");
-                //JOptionPane.showMessageDialog(usuarioView, "Usuário Inválido", "Erro", JOptionPane.ERROR_MESSAGE);
             }
         }catch (Exception e) {
             System.out.println("Usuário Inválido");
             usuarioView.mostrarMensagemDeErro("Usuário Inválido");
-            //JOptionPane.showMessageDialog(usuarioView, "Usuário Inválido", "Erro", JOptionPane.ERROR_MESSAGE);
         }
         return false;
     }
@@ -50,6 +49,7 @@ public class UsuarioControllerImpl implements UsuarioController {
 
         if(nome.isEmpty() || senha.isEmpty() || cpf.isEmpty() || rg.isEmpty() || email.isEmpty()) {
             System.out.println("Erro ao Adicionar Usuário");
+            usuarioView.mostrarMensagemDeErro("Erro ao Adicionar Usuário");
         }else{
             usuarioDataBase.inserirUsuario(nome, senha, cpf, rg, email, isAdmin);
         }
@@ -78,7 +78,6 @@ public class UsuarioControllerImpl implements UsuarioController {
             usuarioDataBase.buscarUsuarioPorRG(rg);
         }else{
             usuarioView.mostrarMensagemDeErro("Usuário não encontrado...");
-            //usuarioView.atualizaDados();
             System.out.println("Usuário não encontrado");
         }
     }
@@ -94,6 +93,7 @@ public class UsuarioControllerImpl implements UsuarioController {
 
         if(nome.isEmpty() || senha.isEmpty() || cpf.isEmpty() || rg.isEmpty() || email.isEmpty()) {
             System.out.println("Erro ao Editar Usuário");
+            usuarioView.mostrarMensagemDeErro("Erro ao Editar Usuário");
         }
         usuarioDataBase.editarUsuario(usuarioID, nome, senha, cpf, rg, email, isAdmin); //Atualiza informações de um certo livro por ID
 
@@ -105,6 +105,7 @@ public class UsuarioControllerImpl implements UsuarioController {
             usuarioDataBase.excluirUsuario(usuarioID);
         }else{
             System.out.println("Usuário não encontrado");
+            usuarioView.mostrarMensagemDeErro("Usuário não encontrado");
         }
     }
 

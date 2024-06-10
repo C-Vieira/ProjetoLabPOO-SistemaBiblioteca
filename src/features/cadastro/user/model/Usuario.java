@@ -97,8 +97,4 @@ public class Usuario {
     public void setAdmin(boolean admin) {
         isAdmin = admin;
     }
-
-    public String getNomeUsuario() {
-        return this.nome;
-    }
 }

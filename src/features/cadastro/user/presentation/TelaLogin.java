@@ -9,6 +9,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class TelaLogin extends JFrame implements BaseView {
+
+    /* Classe que define uma tela de login, contém os campos necessários para autenticação (ID, nome, senha) */
+
     private JLabel lblUsuarioID;
     private JLabel lblUsuario;
     private JLabel lblSenha;
@@ -17,7 +20,6 @@ public class TelaLogin extends JFrame implements BaseView {
     private JPasswordField passFieldSenha;
     private JButton btnLogin;
 
-    //private final features.cadastro.user.datasource.UsuarioDAO usuarioDAO;
     private final UsuarioController usuarioController;
 
     public TelaLogin(UsuarioController usuarioController) {
@@ -63,6 +65,7 @@ public class TelaLogin extends JFrame implements BaseView {
         if(usuarioController.login(usuarioId, nomeUsuario, senha)) {
             ServiceLocator.getInstance().getTelaPrincipal().open();
         }
+        //Limpar campos
         txtFieldUsuarioID.setText("");
         txtFieldUsuario.setText("");
         passFieldSenha.setText("");

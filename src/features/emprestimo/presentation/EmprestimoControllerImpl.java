@@ -36,22 +36,27 @@ public class EmprestimoControllerImpl implements EmprestimoController {
         if(livro == null || usuario == null || dtaEmprestimo.isEmpty() || dtaPrevistaDevolucao.isEmpty()) {
             System.out.println("Erro ao Adicionar Empréstimo");
         }else if(!livro.isDisponivel()){
-            System.out.println("features.cadastro.livro.model.Livro Indisponível");
-            emprestimoView.mostrarMensagemDeErro("features.cadastro.livro.model.Livro Indisponível");
+            System.out.println("Livro Indisponível");
+            emprestimoView.mostrarMensagemDeErro("Livro Indisponível");
         }else {
             emprestimoDataBase.inserirEmprestimo(livro, usuario, dtaEmprestimo, dtaPrevistaDevolucao, dtaRealDevolucao, devolvido);
         }
     }
 
+    //Devolução
     @Override
     public void editarEmprestimo(int emprestimoID){
         if(emprestimoID > -1){
-            Calendar agora = Calendar.getInstance();
-            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yy");
+            if(!emprestimoDataBase.buscarEmprestimoPorID(emprestimoID).isDevolvido()){
+                Calendar agora = Calendar.getInstance();
+                DateFormat dateFormat = new SimpleDateFormat("dd/MM/yy");
 
-            emprestimoDataBase.editarEmprestimo(emprestimoID , dateFormat.format(agora.getTime()), true);
+                emprestimoDataBase.editarEmprestimo(emprestimoID , dateFormat.format(agora.getTime()), true);
+            }else {
+                emprestimoView.mostrarMensagemDeErro("Empréstimo Inválido para Devolução");
+            }
         }else{
-            emprestimoView.mostrarMensagemDeErro("Selecione um emprestimo para devolver");
+            emprestimoView.mostrarMensagemDeErro("Selecione um Empréstimo para Devolver");
         }
     }
 

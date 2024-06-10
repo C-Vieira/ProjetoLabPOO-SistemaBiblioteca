@@ -12,6 +12,6 @@ public interface UsuarioController {
     void buscarUsuario(Object[] dados);
     void editarUsuario(int usuarioID, Object[] dados);
     void excluirUsuario(int usuarioID, Object[] dados);
-    public boolean login(String usuarioId, String nomeUsuario, String senha);
+    boolean login(String usuarioId, String nomeUsuario, String senha);
     List<Usuario> getUsuarios();
 }

@@ -23,8 +23,9 @@ import java.util.List;
 
 public class TelaPesquisa extends TelaBase implements EmprestimoListener {
 
-    /* Classe que define uma tela de pesquisa contendo todos os campos para acomodar os dados de um livro
-       Possui um botão para pesquisa e uma tabela para mostragem de resultados */
+    /* Classe que define uma tela de pesquisa contendo todos os campos para acomodar os dados de um livro, usuário e empréstimo
+       Define a tela de operação do sistema, para realização de busca e seleção de livros / users, criação de empréstimos e devolução
+       Possui um botão para pesquisa, uma tabela para mostragem de resultados e um botão para gerenciar empréstimos e devolução */
 
     private CadastroPublisher livroPublisher, usuarioPublisher;
     private final LivroController livroController;
@@ -122,9 +123,9 @@ public class TelaPesquisa extends TelaBase implements EmprestimoListener {
         btn3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("IDSelecionado: "+IDSelecionado+
+                /* System.out.println("IDSelecionado: "+IDSelecionado+
                         "\nIDLivroSelecionado: "+IDLivroSelecionado+
-                        "\nIDUsuarioSelecionado: "+IDUsuarioSelecionado);
+                        "\nIDUsuarioSelecionado: "+IDUsuarioSelecionado); */
 
                 //Criar novo empréstimo e atualizar tabela
                 mostrarEmprestimos();
@@ -146,6 +147,7 @@ public class TelaPesquisa extends TelaBase implements EmprestimoListener {
 
         recarregarTabela();
 
+        //Evento para desconectar a view, removendo-a da lista de listeners quando fechada
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -154,7 +156,7 @@ public class TelaPesquisa extends TelaBase implements EmprestimoListener {
         });
     }
 
-    /* Override do método para seleção de features.cadastro.presentation.TelaBase para que possamos distinguir os ids... */
+    /* Override do método para seleção da classe TelaBase para que possamos distinguir os ids */
     @Override
     protected void handleSelectionEvent(ListSelectionEvent e) {
         if (e.getValueIsAdjusting())
@@ -188,6 +190,7 @@ public class TelaPesquisa extends TelaBase implements EmprestimoListener {
         atualizaBotaoEmprestimo();
     }
 
+    //Prepara labels, campos e botões dependendo da operação
     private void prepararCamposCadastro(){
         if(pesquisarPorUsuario){
             lblCampo1.setText("Nome:");
@@ -203,7 +206,9 @@ public class TelaPesquisa extends TelaBase implements EmprestimoListener {
             String[] tituloColunas = {"ID", "Nome", "Senha", "CPF", "RG", "Email", "Admin"}; //Define o título de cada coluna
             tableModel.setColumnIdentifiers(tituloColunas);
 
+            //Atualiza estado do botão Busca
             btn1.setEnabled(true);
+            //Atualiza estado do botão Devolver
             btn4.setEnabled(false);
         }else if(mostrarEmprestimos){
             lblCampo1.setText("Título do Livro:");
@@ -216,10 +221,12 @@ public class TelaPesquisa extends TelaBase implements EmprestimoListener {
             radioBtn.setText("Sim");
             radioBtn.setSelected(false);
 
-            String[] tituloColunas = {"ID", "features.cadastro.livro.model.Livro", "Cliente", "Dta Empréstimo", "Dta Prevista Devolução", "Dta Real Devolução", "Devolvido"}; //Define o título de cada coluna
+            String[] tituloColunas = {"ID", "Livro", "Cliente", "Dta Empréstimo", "Dta Prevista Devolução", "Dta Real Devolução", "Devolvido"}; //Define o título de cada coluna
             tableModel.setColumnIdentifiers(tituloColunas);
 
+            //Atualiza estado do botão Busca
             btn1.setEnabled(false);
+            //Atualiza estado do botão Devolução
             btn4.setEnabled(true);
         }else{
             lblCampo1.setText("Título:");
@@ -235,7 +242,9 @@ public class TelaPesquisa extends TelaBase implements EmprestimoListener {
             String[] tituloColunas = {"ID", "Titulo", "Categoria", "Autor", "ISBN", "Prazo", "Disponível"}; //Define o título de cada coluna
             tableModel.setColumnIdentifiers(tituloColunas);
 
+            //Atualiza estado do botão Busca
             btn1.setEnabled(true);
+            //Atualiza estado do botão Devolução
             btn4.setEnabled(false);
         }
 
@@ -270,6 +279,7 @@ public class TelaPesquisa extends TelaBase implements EmprestimoListener {
         IDSelecionado = -1; //Resetamos o ID selecionado para evitar erros
     }
 
+    //Método para atualização do botão de empréstimo: Disponível somente se um livro e um usuário foram selecionados
     private void atualizaBotaoEmprestimo(){
         if(IDLivroSelecionado == -1 || IDUsuarioSelecionado == -1){
             btn3.setEnabled(false);
@@ -285,10 +295,11 @@ public class TelaPesquisa extends TelaBase implements EmprestimoListener {
         prepararCamposCadastro();
         limparCampos();
 
-        System.out.println("IDSelecionado: "+IDSelecionado+
+        /* System.out.println("IDSelecionado: "+IDSelecionado+
                 "\nIDLivroSelecionado: "+IDLivroSelecionado+
-                "\nIDUsuarioSelecionado: "+IDUsuarioSelecionado);
+                "\nIDUsuarioSelecionado: "+IDUsuarioSelecionado); */
 
+        //Preenche campos "Título" e "Nome" com as informações do livro e user selecionados
         if(IDLivroSelecionado != -1) {
             txtFieldCampo1.setText(livroController.buscarLivroPorID(IDLivroSelecionado).getTitulo());
         }
@@ -297,6 +308,8 @@ public class TelaPesquisa extends TelaBase implements EmprestimoListener {
         }
     }
 
+    //Método para preenchimento dos campos para realização de um empréstimo
+    //Realiza a coleta da data atual e sua soma com o prazo de entrega para obter dtaEmprestimo e dtaPrevistaDeEntrega
     private void preencherCamposParaEmprestimo(){
         Calendar agora = Calendar.getInstance();
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yy");
@@ -318,7 +331,7 @@ public class TelaPesquisa extends TelaBase implements EmprestimoListener {
         }
     }
 
-    //Para testes...
+    //Método para testes...
     private void excluir(){
         emprestimoController.excluirEmprestimo(IDSelecionado);
     }

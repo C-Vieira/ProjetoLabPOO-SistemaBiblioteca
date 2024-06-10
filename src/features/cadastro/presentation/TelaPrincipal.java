@@ -10,8 +10,8 @@ import java.awt.event.ActionListener;
 
 public class TelaPrincipal extends javax.swing.JFrame implements BaseView {
 
-    /*  Classe que define uma tela contendo três botões (pesquisa, devolução, cadastro)
-        Usada para navegação no sistema */
+    /*  Classe que define uma tela contendo dois botões: Empréstimos e Cadastros
+        Usada para navegação no sistema, função "Cadastros" é resrita para administradores */
 
     private JPanel pnlTitulo;
     private JPanel pnlPrincipal;
@@ -23,7 +23,6 @@ public class TelaPrincipal extends javax.swing.JFrame implements BaseView {
         setTitle("Tela Principal");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        //setSize(500, 250);
         setLayout(new BorderLayout());
 
         pnlPrincipal = new JPanel();

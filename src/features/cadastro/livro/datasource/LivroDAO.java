@@ -48,7 +48,7 @@ public class LivroDAO implements LivroDataBase, CadastroPublisher {
                 var livro = new Livro(titulo, categoria, autor, ISBN, prazoDeEntrega, disponivel);
                 session.persist(livro);
             });
-            System.out.println("features.cadastro.livro.model.Livro inserido com sucesso");
+            System.out.println("Livro inserido com sucesso");
             notificarLivros();
         } catch (Exception e) {
             System.out.println("Erro ao inserir: " + e.getMessage());
@@ -63,7 +63,7 @@ public class LivroDAO implements LivroDataBase, CadastroPublisher {
                 SelectionQuery<Livro> query = session.createSelectionQuery("from Livro where id = :livroID", Livro.class);
                 query.setParameter("livroID", livroID);
                 if (query.getResultList().isEmpty()) {
-                    notificarErro("features.cadastro.livro.model.Livro não encontrado...");
+                    notificarErro("Livro não encontrado...");
                 }
                 return query.getResultList();
             });
@@ -81,7 +81,7 @@ public class LivroDAO implements LivroDataBase, CadastroPublisher {
                 SelectionQuery<Livro> query = session.createSelectionQuery("from Livro where titulo = :livroTitulo", Livro.class);
                 query.setParameter("livroTitulo", livroTitulo);
                 if (query.getResultList().isEmpty()) {
-                    notificarErro("features.cadastro.livro.model.Livro não encontrado...");
+                    notificarErro("Livro não encontrado...");
                     return getLivros();
                 }
                 return query.getResultList();
@@ -100,7 +100,7 @@ public class LivroDAO implements LivroDataBase, CadastroPublisher {
                 SelectionQuery<Livro> query = session.createSelectionQuery("from Livro where categoria = :livroCategoria", Livro.class);
                 query.setParameter("livroCategoria", livroCategoria);
                 if (query.getResultList().isEmpty()) {
-                    notificarErro("features.cadastro.livro.model.Livro não encontrado...");
+                    notificarErro("Livro não encontrado...");
                     return getLivros();
                 }
                 return query.getResultList();
@@ -119,7 +119,7 @@ public class LivroDAO implements LivroDataBase, CadastroPublisher {
                 SelectionQuery<Livro> query = session.createSelectionQuery("from Livro where autor = :livroAutor", Livro.class);
                 query.setParameter("livroAutor", livroAutor);
                 if (query.getResultList().isEmpty()) {
-                    notificarErro("features.cadastro.livro.model.Livro não encontrado...");
+                    notificarErro("Livro não encontrado...");
                     return getLivros();
                 }
                 return query.getResultList();
@@ -138,7 +138,7 @@ public class LivroDAO implements LivroDataBase, CadastroPublisher {
                 SelectionQuery<Livro> query = session.createSelectionQuery("from Livro where ISBN = :livroISBN", Livro.class);
                 query.setParameter("livroISBN", livroISBN);
                 if (query.getResultList().isEmpty()) {
-                    notificarErro("features.cadastro.livro.model.Livro não encontrado...");
+                    notificarErro("Livro não encontrado...");
                     return getLivros();
                 }
                 return query.getResultList();
@@ -162,7 +162,7 @@ public class LivroDAO implements LivroDataBase, CadastroPublisher {
                 livro.setDisponibilidade(disponibilidade);
                 session.persist(livro);
             });
-            System.out.println("features.cadastro.livro.model.Livro editado com sucesso");
+            System.out.println("Livro editado com sucesso");
             notificarLivros();
         } catch (Exception e) {
             System.out.println("Erro ao editar livro: " + e.getMessage());
@@ -178,7 +178,7 @@ public class LivroDAO implements LivroDataBase, CadastroPublisher {
                 query.executeUpdate();
 
             });
-            System.out.println("features.cadastro.livro.model.Livro excluído com sucesso");
+            System.out.println("Livro excluído com sucesso");
             notificarLivros();
         } catch (Exception e) {
             System.out.println("Erro ao excluir livro: " + e.getMessage());
