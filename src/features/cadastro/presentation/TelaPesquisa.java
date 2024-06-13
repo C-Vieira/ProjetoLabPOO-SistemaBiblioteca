@@ -58,7 +58,7 @@ public class TelaPesquisa extends TelaBase implements EmprestimoListener {
 
         prepararCamposCadastro();
 
-        //Botões para testes
+        /*//Botões para testes
         //Botão Excluir de Teste
         JLabel debug = new JLabel("Para Testes:");
         panelHeader.add(debug);
@@ -70,6 +70,7 @@ public class TelaPesquisa extends TelaBase implements EmprestimoListener {
                 excluir();
             }
         });
+        //Botão SetDisponível de Teste
         panelHeader.add(btnHeader3);
         JButton btnHeader4 = new JButton("SetDisponível");
         btnHeader4.addActionListener(new ActionListener() {
@@ -79,7 +80,7 @@ public class TelaPesquisa extends TelaBase implements EmprestimoListener {
             }
         });
         panelHeader.add(btnHeader4);
-        //Remover aqui!
+        //Remover aqui!*/
 
         btnHeader1.setText("Selecionar Livro");
         btnHeader1.addActionListener(new ActionListener() {
