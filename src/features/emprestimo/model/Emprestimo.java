@@ -17,9 +17,11 @@ public class Emprestimo {
     private int ID;
 
     @ManyToOne
+    @JoinColumn(name = "livro_ID")
     private Livro livro;
 
     @ManyToOne
+    @JoinColumn(name = "usuario_ID")
     private Usuario usuario;
 
     private String dataEmprestimo;
